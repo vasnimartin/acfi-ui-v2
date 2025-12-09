@@ -13,5 +13,6 @@ export const routes: Routes = [
       { path: 'pastors-welcome', loadComponent: () => import('./about/pastors-welcome/pastors-welcome.component').then(m => m.PastorsWelcomeComponent) },
       { path: 'timeline', loadComponent: () => import('./about/timeline/timeline.component').then(m => m.TimelineComponent) },
     ]
-  }
+  },
+  { path: 'contact', loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent) }
 ];
