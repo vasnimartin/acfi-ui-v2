@@ -1,1 +1,33 @@
-<p>timeline works!</p>
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title">ACFI Church Themes</h1>
+    <p class="page-subtitle">Walking in His word from 2005 to 2024.</p>
+  </div>
+</section>
+
+<!-- SECTION 2: Timeline Section -->
+<section class="page-section">
+  <div class="page-container">
+
+    <div class="timeline">
+      <!-- Loop through events -->
+      <div *ngFor="let event of events; let i = index" class="timeline-item" [ngClass]="i % 2 === 0 ? 'left' : 'right'">
+        <div class="content">
+          <span class="time">{{ event.year }}</span>
+          <h3>{{ event.title }}</h3>
+          <p>{{ event.description }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 3: CTA -->
+<section class="section-classic bg-white">
+  <div class="container text-center">
+    <h2 class="section-heading-centered">Be Part of Our Story</h2>
+    <p class="mb-4">God is still writing our history, and there is a place for you here.</p>
+    <a href="#" class="btn btn-primary">Join Us This Sunday</a>
+  </div>
+</section>
