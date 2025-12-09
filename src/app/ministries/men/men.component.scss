@@ -1,0 +1,320 @@
+/* Theme Variables (Scoped) */
+:host {
+    display: block;
+    /* Strong, Bold Palette */
+    --navy-blue: #0f172a;
+    --charcoal: #1e293b;
+    --deep-gold: #b45309; /* Darker, richer gold/bronze */
+    --light-gray: #f1f5f9;
+    --text-white: #ffffff;
+    --text-gray: #94a3b8;
+    
+    font-family: 'Open Sans', sans-serif; /* Clean, legible body font */
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Oswald', sans-serif; /* Bold, strong header font */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.section-container {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.text-center { text-align: center; }
+.text-white { color: var(--text-white); }
+.bg-dark { background-color: var(--charcoal); }
+
+/* Buttons */
+.btn {
+    padding: 16px 36px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px; /* Slightly sharper corners for masculine feel */
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--deep-gold);
+    color: var(--text-white);
+}
+
+.btn-primary:hover {
+    background-color: #92400e;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--text-white);
+    color: var(--text-white);
+}
+
+.btn-outline:hover {
+    background-color: var(--text-white);
+    color: var(--navy-blue);
+}
+
+/* 1. HERO SECTION */
+.hero-section {
+    position: relative;
+    padding: 180px 20px 140px;
+    text-align: center;
+    background-color: var(--navy-blue);
+    color: var(--text-white);
+    overflow: hidden;
+}
+
+/* Geometric texture overlay */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background-image: linear-gradient(30deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000),
+                      linear-gradient(150deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000),
+                      linear-gradient(30deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000),
+                      linear-gradient(150deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000),
+                      linear-gradient(60deg, #777777 25%, transparent 25.5%, transparent 75%, #777777 75%, #777777),
+                      linear-gradient(60deg, #777777 25%, transparent 25.5%, transparent 75%, #777777 75%, #777777);
+    background-size: 80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--text-white);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-gray);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+}
+
+/* 2. VISION SECTION */
+.vision-section {
+    background-color: var(--light-gray);
+}
+
+.vision-content h2 {
+    font-size: 2.5rem;
+    color: var(--navy-blue);
+}
+
+.vision-text {
+    max-width: 800px;
+    margin: 20px auto 40px;
+    font-size: 1.2rem;
+    color: var(--charcoal);
+    line-height: 1.8;
+}
+
+.divider-line {
+    width: 60px;
+    height: 4px;
+    background-color: var(--deep-gold);
+    margin: 0 auto;
+}
+
+/* 3. OPPORTUNITIES */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.opp-card {
+    background: rgba(255, 255, 255, 0.05); /* Proper transparency on dark bg */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 35px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.opp-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--deep-gold);
+    transform: translateY(-5px);
+}
+
+.icon-box {
+    font-size: 2.5rem;
+    color: var(--deep-gold);
+    margin-bottom: 20px;
+}
+
+.opp-card h3 {
+    font-size: 1.4rem;
+    color: var(--text-white);
+    margin-bottom: 15px;
+}
+
+.opp-card p {
+    color: var(--text-gray);
+    font-size: 1rem;
+}
+
+/* 4. MODERN MINISTRY */
+.modern-section {
+    background-color: var(--navy-blue);
+    color: var(--text-white);
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.pill-label {
+    background-color: var(--deep-gold);
+    color: var(--text-white);
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.modern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.modern-item {
+    background: var(--charcoal);
+    padding: 30px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s;
+}
+
+.modern-item:hover {
+    border-left-color: var(--deep-gold);
+    background: #253346; /* Slightly lighter charcoal */
+}
+
+.modern-item i {
+    font-size: 2rem;
+    color: var(--text-white);
+    margin-bottom: 20px;
+}
+
+.modern-item h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.modern-item p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* 5. TESTIMONY */
+.testimony-section {
+    background: linear-gradient(to right, var(--charcoal), var(--navy-blue));
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.testimony-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.quote-icon {
+    font-size: 3rem;
+    color: var(--deep-gold);
+    opacity: 0.3;
+    margin-bottom: 20px;
+}
+
+.testimony-content blockquote {
+    font-size: 1.8rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0 0 30px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.testimony-content cite {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--deep-gold);
+    font-style: normal;
+}
+
+/* 6. CTA */
+.cta-section {
+    position: relative;
+    padding: 120px 20px;
+    background: #000;
+    color: var(--text-white);
+    background-image: url('https://images.unsplash.com/photo-1475483768296-6163e08872a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); /* Stylized placeholder texture/image */
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+}
+
+.cta-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.85);
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.scripture-text {
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.scripture-ref {
+    font-size: 1.1rem;
+    color: var(--deep-gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    display: block;
+    font-weight: 800;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 3rem; }
+    .testimony-content blockquote { font-size: 1.4rem; }
+}

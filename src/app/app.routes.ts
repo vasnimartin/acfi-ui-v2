@@ -14,5 +14,23 @@ export const routes: Routes = [
       { path: 'timeline', loadComponent: () => import('./about/timeline/timeline.component').then(m => m.TimelineComponent) },
     ]
   },
+  {
+    path: 'ministries',
+    children: [
+      { path: 'children', loadComponent: () => import('./ministries/children/children.component').then(m => m.ChildrenComponent) },
+      { path: 'music-worship', loadComponent: () => import('./ministries/music-worship/music-worship.component').then(m => m.MusicWorshipComponent) },
+      { path: 'outreach', loadComponent: () => import('./ministries/outreach/outreach.component').then(m => m.OutreachComponent) },
+      { path: 'prayer', loadComponent: () => import('./ministries/prayer/prayer.component').then(m => m.PrayerComponent) },
+      { path: 'youth', loadComponent: () => import('./ministries/youth/youth.component').then(m => m.YouthComponent) },
+      { path: 'women', loadComponent: () => import('./ministries/women/women.component').then(m => m.WomenComponent) },
+      { path: 'men', loadComponent: () => import('./ministries/men/men.component').then(m => m.MenComponent) }
+    ]
+  },
+  {
+    path: 'gatherings',
+    children: [
+      { path: 'sunday-services', loadComponent: () => import('./gatherings/sunday-services/sunday-services.component').then(m => m.SundayServicesComponent) }
+    ]
+  },
   { path: 'contact', loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent) }
 ];
