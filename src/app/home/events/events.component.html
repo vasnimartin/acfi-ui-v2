@@ -1,106 +1,109 @@
 <section class="events-section">
   <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Christmas Celebrations & Events</h2>
-      <p class="section-subtitle">Join us as we celebrate the birth of our Savior together.</p>
-    </div>
-
-    <div class="events-grid">
-
-      <!-- Event: Round Rock / Hutto -->
-      <div class="event-card">
-        <div class="event-image">
-          <img
-            src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80"
-            alt="Christmas Carols">
+    <!-- Simplified Section with Explore Button -->
+    <div class="explore-events-card" (click)="openModal()">
+      <div class="explore-content">
+        <div class="christmas-ornament">
+          <i class="fa-solid fa-star"></i>
         </div>
-        <div class="event-content">
-          <h3 class="event-title">Carol Rounds — Round Rock / Hutto</h3>
-          <div class="event-meta">
-            <i class="fa-regular fa-calendar"></i> Friday, December 12 • 7:00 PM
-          </div>
-          <p class="event-desc">A joyful time of singing carols, prayer, and visiting families with the love of Christ.</p>
-          <a href="#" class="btn btn-outline-gold">View Details</a>
-        </div>
+        <h2 class="explore-title">Christmas Celebrations & Events</h2>
+        <p class="explore-subtitle">Join us as we celebrate the birth of our Savior together.</p>
+        <button class="btn-explore-events" type="button" (click)="openModal()">
+          <span>Explore Events</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
       </div>
-
-      <!-- Event: Pflugerville -->
-      <div class="event-card">
-        <div class="event-image">
-          <img
-            src="https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=900&q=80"
-            alt="Carol Rounds">
-        </div>
-        <div class="event-content">
-          <h3 class="event-title">Carol Rounds — Pflugerville</h3>
-          <div class="event-meta">
-            <i class="fa-regular fa-calendar"></i> Sunday, December 14 • 6:00 PM
-          </div>
-          <p class="event-desc">Join us as we visit homes in Pflugerville sharing worship, joy, and the message of Christ.</p>
-          <a href="#" class="btn btn-outline-gold">Learn More</a>
-        </div>
+      <div class="explore-decoration">
+        <div class="snowflake snowflake-1">❄</div>
+        <div class="snowflake snowflake-2">❄</div>
+        <div class="snowflake snowflake-3">✦</div>
       </div>
-
-      <!-- Event: North Austin -->
-      <div class="event-card">
-        <div class="event-image">
-          <img
-            src="https://images.unsplash.com/photo-1505324394634-1b40b67a9e2e?auto=format&fit=crop&w=900&q=80"
-            alt="Christmas Fellowship">
-        </div>
-        <div class="event-content">
-          <h3 class="event-title">Carol Rounds — North Austin</h3>
-          <div class="event-meta">
-            <i class="fa-regular fa-calendar"></i> Friday, December 19 • 7:00 PM
-          </div>
-          <p class="event-desc">Worship, fellowship, and carols as we visit families in the North Austin community.</p>
-          <a href="#" class="btn btn-outline-gold">See More</a>
-        </div>
-      </div>
-
-     <!-- Georgetown -->
-<div class="event-card">
-  <div class="event-image">
-    <img 
-      src="https://images.unsplash.com/photo-1607082350899-7e1052bb65ba?auto=format&fit=crop&w=1200&q=80"
-      alt="Georgetown Christmas">
-  </div>
-  <div class="event-content">
-    <h3 class="event-title">Carol Rounds — Georgetown</h3>
-    <div class="event-meta">
-      <i class="fa-regular fa-calendar"></i> Saturday, December 20 • 6:30 PM
-    </div>
-    <p class="event-desc">
-      Celebrate the season with carols, prayer, and outreach in the Georgetown area.
-    </p>
-    <a href="#" class="btn btn-outline-gold">Learn More</a>
-  </div>
-</div>
-
-<!-- Cedar Park / Leander -->
-<div class="event-card">
-  <div class="event-image">
-    <img 
-      src="https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1200&q=80"
-      alt="Cedar Park Christmas">
-  </div>
-  <div class="event-content">
-    <h3 class="event-title">Carol Rounds — Cedar Park / Leander</h3>
-    <div class="event-meta">
-      <i class="fa-regular fa-calendar"></i> Sunday, December 21 • 6:00 PM
-    </div>
-    <p class="event-desc">
-      Bringing the joy of Christ to homes and families through worship and Christmas carols.
-    </p>
-    <a href="#" class="btn btn-outline-gold">View Details</a>
-  </div>
-</div>
-
-
-    </div>
-
-    <div class="events-footer">
-      <a href="#" class="text-link-large">See all events <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
+
+<!-- Futuristic Christmas Events Modal -->
+<div class="events-modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="events-modal" (click)="$event.stopPropagation()">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="header-decoration">
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+      </div>
+      <h2 class="modal-title">
+        <i class="fa-solid fa-snowflake"></i>
+        Christmas Events 2024
+      </h2>
+      <p class="modal-subtitle">Carol Rounds & Celebrations</p>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Events List View -->
+    <div class="modal-body" *ngIf="!selectedEvent">
+      <div class="events-list">
+        <div class="event-item" *ngFor="let event of events" (click)="selectEvent(event)">
+          <div class="event-date-badge">
+            <span class="date-day">{{ event.date.split(' ')[2] }}</span>
+            <span class="date-month">{{ event.date.split(' ')[1] }}</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-name">{{ event.title }} — {{ event.location }}</h3>
+            <div class="event-time">
+              <i class="fa-regular fa-clock"></i> {{ event.time }}
+            </div>
+          </div>
+          <div class="event-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Detail View -->
+    <div class="modal-body event-detail" *ngIf="selectedEvent">
+      <button class="back-btn" (click)="backToList()">
+        <i class="fa-solid fa-arrow-left"></i> Back to Events
+      </button>
+
+      <div class="detail-image">
+        <img [src]="selectedEvent.image" [alt]="selectedEvent.title">
+        <div class="image-overlay">
+          <div class="date-ribbon">
+            <i class="fa-regular fa-calendar"></i>
+            {{ selectedEvent.date }} • {{ selectedEvent.time }}
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-content">
+        <h2 class="detail-title">{{ selectedEvent.title }}</h2>
+        <div class="detail-location">
+          <i class="fa-solid fa-location-dot"></i> {{ selectedEvent.location }}
+        </div>
+        <p class="detail-description">{{ selectedEvent.description }}</p>
+
+        <div class="detail-actions">
+          <button class="btn-primary-christmas">
+            <i class="fa-solid fa-calendar-plus"></i> Add to Calendar
+          </button>
+          <button class="btn-secondary-christmas">
+            <i class="fa-solid fa-share-nodes"></i> Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <div class="footer-stars">
+        <span>✦</span><span>✦</span><span>✦</span>
+      </div>
+      <p>"For unto us a child is born, unto us a son is given" — Isaiah 9:6</p>
+    </div>
+  </div>
+</div>

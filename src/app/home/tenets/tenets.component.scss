@@ -1,29 +1,57 @@
-/* Tenets Section */
+/* Tenets Section - Dark Navy for Dramatic Contrast */
 .tenets-section {
     padding: 80px 0;
-    /* Soft blue gradient extension for visual break */
-    background: linear-gradient(to bottom, #F0F4FF, #ffffff);
-    border-top: 1px solid #e1e7f0;
+    background: linear-gradient(135deg, var(--section-navy) 0%, var(--section-navy-light) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative pattern overlay */
+.tenets-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.tenets-section .section-header {
+    position: relative;
+    z-index: 1;
+}
+
+.tenets-section .section-title {
+    color: var(--text-light);
+}
+
+.tenets-section .section-subtitle {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .tenets-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px; /* Standard Gap */
+    gap: 40px;
     max-width: 1800px;
     margin: 0 auto;
     padding: 0 40px;
     margin-bottom: 50px;
+    position: relative;
+    z-index: 1;
 }
 
 .tenet-card {
-    background: linear-gradient(145deg, #ffffff, #f0f9ff);
-    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 48px 32px;
     text-align: center;
-    transition: all 0.3s ease;
-    border-bottom: 4px solid transparent;
+    transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,43 +60,40 @@
 
 .tenet-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.08);
-    border-bottom-color: var(--accent-gold);
-    background: white;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-gold);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
 
 .tenet-icon {
     width: 80px;
     height: 80px;
-    background-color: white;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #e8c874 100%);
     border-radius: 50%;
     margin: 0 auto 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
-    color: var(--primary-blue);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+    color: var(--section-navy);
+    box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.4);
     transition: all 0.3s ease;
-    border: 1px solid #f1f5f9;
 }
 
 .tenet-card:hover .tenet-icon {
-    background-color: var(--primary-blue);
-    color: var(--accent-gold);
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px -5px rgba(212, 175, 55, 0.5);
 }
 
 .tenet-title {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    color: var(--primary-blue);
+    color: var(--text-light);
     margin-bottom: 16px;
 }
 
 .tenet-desc {
-    color: #64748b;
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1.7;
     margin-bottom: 0;
     font-size: 1rem;
@@ -78,11 +103,13 @@
 .tenets-footer {
     text-align: center;
     padding-top: 30px;
+    position: relative;
+    z-index: 1;
 }
 
 .tenets-footer a {
     font-weight: 700;
-    color: var(--primary-blue);
+    color: var(--accent-gold);
     text-decoration: none;
     font-size: 1.05rem;
     border-bottom: 2px solid transparent;
@@ -91,7 +118,7 @@
 }
 
 .tenets-footer a:hover {
-    color: var(--accent-gold);
+    color: #e8c874;
     border-bottom-color: var(--accent-gold);
 }
 

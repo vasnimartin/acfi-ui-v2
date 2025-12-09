@@ -1,14 +1,24 @@
 /* Testimonials Section */
 .testimonials-section {
     padding: 80px 0;
-    background-color: #F0F2F5; /* Clean, readable gray */
-    border-top: 1px solid #e1e7f0;
+    background: linear-gradient(180deg, var(--section-cream) 0%, #fff 100%);
+    position: relative;
+}
+
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
 }
 
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px; /* Standard Gap */
+    gap: 40px;
     max-width: 1800px;
     margin: 0 auto;
     padding: 0 40px;
@@ -17,18 +27,31 @@
 
 .testimonial-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 48px 32px;
     text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    border: 1px solid #f8fafc;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(212, 175, 55, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100%;
     opacity: 0;
     animation: fadeInUp 0.6s ease-out forwards;
+    position: relative;
+}
+
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-gold), #e8c874);
+    border-radius: 0 0 4px 4px;
 }
 
 .testimonial-card:nth-child(1) {
@@ -44,28 +67,29 @@
 }
 
 .testimonial-card:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.12), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    transform: translateY(-12px);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-gold);
 }
 
 .quote-icon {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     color: var(--accent-gold);
-    opacity: 0.3;
+    opacity: 0.6;
     margin-bottom: 24px;
     transition: all 0.4s ease;
 }
 
 .testimonial-card:hover .quote-icon {
-    opacity: 0.6;
-    transform: scale(1.1);
+    opacity: 1;
+    transform: scale(1.15);
 }
 
 .testimonial-text {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     color: #475569;
     font-style: italic;
-    line-height: 1.8;
+    line-height: 1.9;
     margin-bottom: 30px;
     flex: 1;
 }
@@ -73,7 +97,7 @@
 .testimonial-divider {
     width: 50px;
     height: 2px;
-    background-color: #e2e8f0;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
     margin-bottom: 20px;
 }
 
