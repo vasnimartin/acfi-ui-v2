@@ -1,0 +1,100 @@
+.christmas-welcome {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.welcome-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.welcome-image {
+    opacity: 0;
+    animation: fadeInUp 0.7s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.welcome-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    opacity: 0;
+    animation: fadeInUp 0.7s ease-out forwards;
+    animation-delay: 0.4s;
+}
+
+.welcome-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--christmas-blue);
+    margin-bottom: 10px;
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.8;
+}
+
+.service-times {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    border-left: 4px solid var(--christmas-gold);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.times-heading {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--christmas-blue);
+    margin-bottom: 20px;
+}
+
+.time-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    
+    i {
+        color: var(--christmas-gold);
+        font-size: 1.2rem;
+    }
+    
+    div {
+        display: flex;
+        flex-direction: column;
+        
+        strong {
+            color: var(--primary-blue);
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        
+        span {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .welcome-title {
+        font-size: 2rem;
+    }
+}

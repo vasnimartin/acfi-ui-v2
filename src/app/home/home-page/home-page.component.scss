@@ -1,1 +1,17 @@
-/* Hero styles moved to hero.component.scss */
+/* Home Page Wrapper for Global Snow */
+.home-page-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.home-page-wrapper .snow-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+}

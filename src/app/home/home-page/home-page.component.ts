@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HeroComponent } from '../hero/hero.component';
+import { ChristmasWelcomeComponent } from '../christmas-welcome/christmas-welcome.component';
 import { ServiceScheduleComponent } from '../service-schedule/service-schedule.component';
 import { EventsComponent } from '../events/events.component';
 import { TenetsComponent } from '../tenets/tenets.component';
@@ -12,6 +13,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
   standalone: true,
   imports: [
     HeroComponent,
+    ChristmasWelcomeComponent,
     ServiceScheduleComponent,
     EventsComponent,
     TenetsComponent,
