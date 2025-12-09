@@ -1,12 +1,13 @@
 <header class="site-header">
     <div class="container">
         <div class="header-inner">
-            <a routerLink="/" class="logo">
+            <a routerLink="/" class="logo" (click)="closeMenu()">
                 <span class="logo-text">ACFI</span>
                 <span class="logo-sub">Church</span>
             </a>
 
-            <button class="mobile-toggle" aria-label="Toggle Navigation" (click)="toggleMenu()">
+            <button class="mobile-toggle" [class.active]="menuOpen" aria-label="Toggle Navigation"
+                (click)="toggleMenu()">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -14,79 +15,89 @@
 
             <nav class="main-nav" [class.active]="menuOpen">
                 <ul class="nav-list">
-                    <li class="nav-item"><a routerLink="/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a routerLink="/" class="nav-link" (click)="closeMenu()">Home</a></li>
 
-                    <li class="nav-item has-dropdown">
-                        <a class="nav-link">About</a>
+                    <li class="nav-item has-dropdown" [class.active]="activeDropdown === 'about'">
+                        <a class="nav-link" (click)="toggleDropdown('about', $event)">About <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a routerLink="/about/who-we-are">Who We Are</a></li>
-                            <li><a routerLink="/about/vision-mission">Vision & Mission</a></li>
-                            <li><a routerLink="/about/statement-of-faith">Statement of Faith</a></li>
-                            <li><a routerLink="/about/pastors-welcome">Pastor’s Welcome</a></li>
-                            <li><a routerLink="/about/timeline">ACFI Church Themes</a></li>
+                            <li><a routerLink="/about/who-we-are" (click)="closeMenu()">Who We Are</a></li>
+                            <li><a routerLink="/about/vision-mission" (click)="closeMenu()">Vision & Mission</a></li>
+                            <li><a routerLink="/about/statement-of-faith" (click)="closeMenu()">Statement of Faith</a>
+                            </li>
+                            <li><a routerLink="/about/pastors-welcome" (click)="closeMenu()">Pastor's Welcome</a></li>
+                            <li><a routerLink="/about/timeline" (click)="closeMenu()">ACFI Church Themes</a></li>
                         </ul>
                     </li>
 
-                    <li class="nav-item has-dropdown">
-                        <a class="nav-link">Ministries</a>
+                    <li class="nav-item has-dropdown" [class.active]="activeDropdown === 'ministries'">
+                        <a class="nav-link" (click)="toggleDropdown('ministries', $event)">Ministries <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a routerLink="/ministries/children">Children</a></li>
-                            <li><a routerLink="/ministries/youth">Youth</a></li>
-                            <li><a routerLink="/ministries/women">Women</a></li>
-                            <li><a routerLink="/ministries/men">Men</a></li>
-                            <li><a routerLink="/ministries/music-worship">Music & Worship</a></li>
-                            <li><a routerLink="/ministries/outreach">Outreach</a></li>
-                            <li><a routerLink="/ministries/prayer">Prayer</a></li>
+                            <li><a routerLink="/ministries/children" (click)="closeMenu()">Children</a></li>
+                            <li><a routerLink="/ministries/youth" (click)="closeMenu()">Youth</a></li>
+                            <li><a routerLink="/ministries/women" (click)="closeMenu()">Women</a></li>
+                            <li><a routerLink="/ministries/men" (click)="closeMenu()">Men</a></li>
+                            <li><a routerLink="/ministries/music-worship" (click)="closeMenu()">Music & Worship</a></li>
+                            <li><a routerLink="/ministries/outreach" (click)="closeMenu()">Outreach</a></li>
+                            <li><a routerLink="/ministries/prayer" (click)="closeMenu()">Prayer</a></li>
                         </ul>
                     </li>
 
-                    <li class="nav-item has-dropdown">
-                        <a class="nav-link">Gatherings</a>
+                    <li class="nav-item has-dropdown" [class.active]="activeDropdown === 'gatherings'">
+                        <a class="nav-link" (click)="toggleDropdown('gatherings', $event)">Gatherings <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a routerLink="/gatherings/sunday-services">Sunday Services</a></li>
-                            <li><a routerLink="/gatherings/bible-studies">Bible Studies</a></li>
-                            <li><a routerLink="/gatherings/monthly-fellowship">Monthly Fellowship</a></li>
-                            <li><a routerLink="/gatherings/full-calendar">Full Calendar</a></li>
+                            <li><a routerLink="/gatherings/sunday-services" (click)="closeMenu()">Sunday Services</a>
+                            </li>
+                            <li><a routerLink="/gatherings/bible-studies" (click)="closeMenu()">Bible Studies</a></li>
+                            <li><a routerLink="/gatherings/monthly-fellowship" (click)="closeMenu()">Monthly
+                                    Fellowship</a></li>
+                            <li><a routerLink="/gatherings/full-calendar" (click)="closeMenu()">Full Calendar</a></li>
                         </ul>
                     </li>
 
-                    <li class="nav-item has-dropdown">
-                        <a class="nav-link">Media</a>
+                    <li class="nav-item has-dropdown" [class.active]="activeDropdown === 'media'">
+                        <a class="nav-link" (click)="toggleDropdown('media', $event)">Media <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a href="#">Sermons & Videos</a></li>
-                            <li><a href="#">Weekly Bulletins</a></li>
-                            <li><a href="#">Photo Gallery</a></li>
-                            <li><a href="#">Testimonials</a></li>
-                            <li><a href="#">Devotionals</a></li>
+                            <li><a href="#" (click)="closeMenu()">Sermons & Videos</a></li>
+                            <li><a href="#" (click)="closeMenu()">Weekly Bulletins</a></li>
+                            <li><a href="#" (click)="closeMenu()">Photo Gallery</a></li>
+                            <li><a href="#" (click)="closeMenu()">Testimonials</a></li>
+                            <li><a href="#" (click)="closeMenu()">Devotionals</a></li>
                         </ul>
                     </li>
 
-                    <li class="nav-item has-dropdown">
-                        <a class="nav-link">Resources</a>
+                    <li class="nav-item has-dropdown" [class.active]="activeDropdown === 'resources'">
+                        <a class="nav-link" (click)="toggleDropdown('resources', $event)">Resources <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a routerLink="/jobs">Employment</a></li>
-                            <li><a routerLink="/resources/lenten-devotionals">Lenten Daily Devotionals 2024</a></li>
-                            <li><a routerLink="/resources/bulletins">Weekly Bulletins</a></li>
-                            <li><a routerLink="/resources/gallery">Photo Gallery</a></li>
-                            <li><a routerLink="/resources/videos">Videos</a></li>
-                            <li><a routerLink="/resources/testimonials">Testimonials</a></li>
-                            <li><a routerLink="/resources/silent-auction">Silent Auction</a></li>
-                            <li><a routerLink="/resources/archives">Archives</a></li>
-                            <li><a routerLink="/resources/shop">Shop</a></li>
-                            <li><a routerLink="/resources/prayer-request">Prayer Request</a></li>
+                            <li><a routerLink="/jobs" (click)="closeMenu()">Employment</a></li>
+                            <li><a routerLink="/resources/lenten-devotionals" (click)="closeMenu()">Lenten Daily
+                                    Devotionals 2024</a></li>
+                            <li><a routerLink="/resources/bulletins" (click)="closeMenu()">Weekly Bulletins</a></li>
+                            <li><a routerLink="/resources/gallery" (click)="closeMenu()">Photo Gallery</a></li>
+                            <li><a routerLink="/resources/videos" (click)="closeMenu()">Videos</a></li>
+                            <li><a routerLink="/resources/testimonials" (click)="closeMenu()">Testimonials</a></li>
+                            <li><a routerLink="/resources/silent-auction" (click)="closeMenu()">Silent Auction</a></li>
+                            <li><a routerLink="/resources/archives" (click)="closeMenu()">Archives</a></li>
+                            <li><a routerLink="/resources/shop" (click)="closeMenu()">Shop</a></li>
+                            <li><a routerLink="/resources/prayer-request" (click)="closeMenu()">Prayer Request</a></li>
                         </ul>
                     </li>
 
-                    <li class="nav-item has-dropdown highlight-item">
-                        <a class="nav-link">Give</a>
+                    <li class="nav-item has-dropdown highlight-item" [class.active]="activeDropdown === 'give'">
+                        <a class="nav-link" (click)="toggleDropdown('give', $event)">Give <i
+                                class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a href="#">Online Giving</a></li>
-                            <li><a href="#">Building Fund</a></li>
+                            <li><a href="#" (click)="closeMenu()">Online Giving</a></li>
+                            <li><a href="#" (click)="closeMenu()">Building Fund</a></li>
                         </ul>
                     </li>
 
                     <li class="nav-item contact-item">
-                        <a routerLink="/contact" class="nav-link">Contact</a>
+                        <a routerLink="/contact" class="nav-link" (click)="closeMenu()">Contact</a>
                     </li>
                 </ul>
             </nav>
