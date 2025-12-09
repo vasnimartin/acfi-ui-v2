@@ -20,8 +20,94 @@
           This Christmas, we invite you to celebrate the birth of our Savior with us.
           Experience the warmth of fellowship, the joy of worship, and the peace that comes from knowing Christ.
         </p>
-        <a routerLink="/contact" class="btn-explore">EXPLORE SERIES</a>
+        <button type="button" class="btn-explore" (click)="openModal()">EXPLORE SERIES</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Futuristic Christmas Events Modal -->
+<div class="events-modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="events-modal" (click)="$event.stopPropagation()">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="header-decoration">
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+      </div>
+      <h2 class="modal-title">
+        <i class="fa-solid fa-snowflake"></i>
+        Christmas Events 2024
+      </h2>
+      <p class="modal-subtitle">Carol Rounds & Celebrations</p>
+      <button class="close-btn" type="button" (click)="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Events List View -->
+    <div class="modal-body" *ngIf="!selectedEvent">
+      <div class="events-list">
+        <div class="event-item" *ngFor="let event of events" (click)="selectEvent(event)">
+          <div class="event-date-badge">
+            <span class="date-day">{{ event.date.split(' ')[2] }}</span>
+            <span class="date-month">{{ event.date.split(' ')[1] }}</span>
+          </div>
+          <div class="event-info">
+            <h3 class="event-name">{{ event.title }} — {{ event.location }}</h3>
+            <div class="event-time">
+              <i class="fa-regular fa-clock"></i> {{ event.time }}
+            </div>
+          </div>
+          <div class="event-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Detail View -->
+    <div class="modal-body event-detail" *ngIf="selectedEvent">
+      <button class="back-btn" type="button" (click)="backToList()">
+        <i class="fa-solid fa-arrow-left"></i> Back to Events
+      </button>
+
+      <div class="detail-image">
+        <img [src]="selectedEvent.image" [alt]="selectedEvent.title">
+        <div class="image-overlay">
+          <div class="date-ribbon">
+            <i class="fa-regular fa-calendar"></i>
+            {{ selectedEvent.date }} • {{ selectedEvent.time }}
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-content">
+        <h2 class="detail-title">{{ selectedEvent.title }}</h2>
+        <div class="detail-location">
+          <i class="fa-solid fa-location-dot"></i> {{ selectedEvent.location }}
+        </div>
+        <p class="detail-description">{{ selectedEvent.description }}</p>
+
+        <div class="detail-actions">
+          <button class="btn-primary-christmas" type="button">
+            <i class="fa-solid fa-calendar-plus"></i> Add to Calendar
+          </button>
+          <button class="btn-secondary-christmas" type="button">
+            <i class="fa-solid fa-share-nodes"></i> Share
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <div class="footer-stars">
+        <span>✦</span><span>✦</span><span>✦</span>
+      </div>
+      <p>"For unto us a child is born, unto us a son is given" — Isaiah 9:6</p>
+    </div>
+  </div>
+</div>
