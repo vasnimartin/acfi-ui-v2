@@ -1,0 +1,32 @@
+/* Header */
+.site-header {
+    background-color: #ffffff;
+    height: var(--header-height);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Softer initial shadow */
+    transition: var(--transition);
+    border-bottom: 1px solid rgba(0,0,0,0.03); /* Subtle separation */
+}
+
+.site-header.scrolled {
+    height: 70px; /* Compress on scroll */
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 1800px; /* MATCH GLOBAL CONTAINER */
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}

@@ -1,0 +1,114 @@
+/* Tenets Section */
+.tenets-section {
+    padding: 80px 0;
+    /* Soft blue gradient extension for visual break */
+    background: linear-gradient(to bottom, #F0F4FF, #ffffff);
+    border-top: 1px solid #e1e7f0;
+}
+
+.tenets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px; /* Standard Gap */
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 40px;
+    margin-bottom: 50px;
+}
+
+.tenet-card {
+    background: linear-gradient(145deg, #ffffff, #f0f9ff);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 48px 32px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-bottom: 4px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.tenet-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.08);
+    border-bottom-color: var(--accent-gold);
+    background: white;
+}
+
+.tenet-icon {
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--primary-blue);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
+}
+
+.tenet-card:hover .tenet-icon {
+    background-color: var(--primary-blue);
+    color: var(--accent-gold);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+}
+
+.tenet-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 16px;
+}
+
+.tenet-desc {
+    color: #64748b;
+    line-height: 1.7;
+    margin-bottom: 0;
+    font-size: 1rem;
+    max-width: 300px;
+}
+
+.tenets-footer {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.tenets-footer a {
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-size: 1.05rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+}
+
+.tenets-footer a:hover {
+    color: var(--accent-gold);
+    border-bottom-color: var(--accent-gold);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .tenets-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .tenets-grid {
+        grid-template-columns: 1fr;
+        padding: 0 30px;
+    }
+    
+    .tenet-card {
+        padding: 40px 24px;
+    }
+}

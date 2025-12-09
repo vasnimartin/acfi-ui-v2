@@ -1,0 +1,208 @@
+/* Footer Component */
+.site-footer {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 80px 0 30px;
+    font-size: 0.95rem;
+    border-top: 5px solid var(--accent-gold);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.2fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Footer Logo */
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.1;
+    color: white;
+    margin-bottom: 24px;
+    text-decoration: none;
+}
+
+.footer-logo .logo-text {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.footer-logo .logo-sub {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent-gold);
+    margin-top: 4px;
+}
+
+.footer-desc {
+    color: #cbd5e1;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 320px;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icon {
+    width: 44px;
+    height: 44px;
+    background-color: rgba(255, 255, 255, 0.08); /* Subtle transparency */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.social-icon:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-blue);
+    transform: translateY(-4px);
+    border-color: var(--accent-gold);
+}
+
+/* Footer Menu */
+.footer-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--accent-gold);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.footer-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.footer-menu a {
+    color: #e2e8f0; /* Light gray text */
+    transition: all 0.3s ease;
+    text-decoration: none;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer-menu a:hover {
+    color: var(--accent-gold);
+    padding-left: 8px;
+}
+
+/* Contact Info */
+.footer-info {
+    color: #e2e8f0;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+}
+
+.footer-info i {
+    color: var(--accent-gold);
+    margin-top: 4px;
+}
+
+.footer-times {
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-times p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #e2e8f0;
+}
+
+.footer-times p:last-child {
+    margin-bottom: 0;
+}
+
+.footer-times strong {
+    color: var(--accent-gold);
+    font-weight: 700;
+}
+
+/* Footer Button */
+.btn-footer {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.btn-footer:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-blue);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+/* CopyRight */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 32px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 50px;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .footer-col {
+        align-items: center; /* Center align on mobile for cleaner look */
+        text-align: center;
+    }
+    
+    .footer-logo {
+        align-items: center;
+    }
+    
+    .footer-info, .footer-times {
+        text-align: left; /* Keep readable text left aligned if bulky */
+    }
+    
+    .footer-times {
+        width: 100%; /* Ensure full width card */
+    }
+}
