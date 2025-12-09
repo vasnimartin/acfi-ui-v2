@@ -1,0 +1,385 @@
+/* Theme Variables (Scoped) */
+:host {
+    display: block;
+    /* Warm, Relational Palette */
+    --warm-orange: #E67E22;
+    --soft-peach: #FFF5EE;
+    --warm-brown: #8B4513;
+    --cream: #FFFAF0;
+    --text-dark: #2C3E50;
+    --text-light: #7F8C8D;
+    --gold-accent: #C6A87C;
+    
+    font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.section-container {
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.text-center { text-align: center; }
+.bg-warm { background-color: var(--soft-peach); }
+
+.img-placeholder {
+    background-color: #E0E0E0;
+    min-height: 300px;
+    background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Buttons */
+.btn {
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+    border: 2px solid transparent;
+}
+
+.btn-lg {
+    padding: 16px 36px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--warm-orange);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #D35400;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--warm-orange);
+    color: var(--warm-orange);
+}
+
+.btn-outline:hover {
+    background-color: var(--warm-orange);
+    color: white;
+}
+
+.btn-link {
+    background: none;
+    color: var(--warm-orange);
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    padding: 0;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+/* 1. HERO SECTION */
+.hero-section {
+    position: relative;
+    padding: 160px 20px 120px;
+    text-align: center;
+    background-color: var(--text-dark);
+    color: white;
+    background-image: url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(44, 62, 80, 0.65);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    color: white;
+    font-size: 3.8rem;
+    margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    color: #ECF0F1;
+}
+
+/* 2. OVERVIEW */
+.overview-icon {
+    font-size: 2.5rem;
+    color: var(--warm-orange);
+    margin-bottom: 20px;
+}
+
+.overview-text {
+    max-width: 750px;
+    margin: 0 auto;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+/* 3 & 4. HIGHLIGHT CARDS (IGNITE & PREM MILAN) */
+.highlight-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+    .highlight-card { grid-template-columns: 1fr 1fr; }
+    .highlight-card.reverse { grid-template-columns: 1fr 1fr; }
+    .highlight-card.reverse .highlight-content { order: 2; }
+    .highlight-card.reverse .highlight-image { order: 1; }
+}
+
+.highlight-content {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.label-accent {
+    color: var(--warm-orange);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.highlight-content h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.highlight-content p {
+    color: var(--text-light);
+    margin-bottom: 25px;
+    line-height: 1.7;
+}
+
+.detail-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+.detail-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.detail-list i {
+    color: var(--warm-orange);
+    width: 20px;
+    text-align: center;
+}
+
+.feature-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: var(--soft-peach);
+    color: var(--warm-brown);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.info-note {
+    background-color: #E8F4F8;
+    border-left: 4px solid #3498DB;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.info-note i {
+    color: #3498DB;
+}
+
+/* 5. RHYTHMS */
+.rhythm-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.rhythm-card {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.rhythm-card:hover {
+    transform: translateY(-5px);
+}
+
+.rhythm-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--warm-orange), #D35400);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.8rem;
+}
+
+.rhythm-time {
+    font-weight: 700;
+    color: var(--warm-orange);
+    margin-bottom: 10px;
+}
+
+.rhythm-desc {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* 6. MODERN FEATURES */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.feature-item {
+    background: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.feature-item i {
+    font-size: 2rem;
+    color: var(--warm-orange);
+    margin-bottom: 15px;
+}
+
+.feature-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.feature-item p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* 7. TESTIMONIES */
+.testimony-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.quote-icon {
+    font-size: 3rem;
+    color: var(--warm-orange);
+    opacity: 0.2;
+    margin-bottom: 20px;
+}
+
+.testimony-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.testimony-item {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--text-dark);
+    line-height: 1.7;
+}
+
+.testimony-item p {
+    margin-bottom: 15px;
+}
+
+.testimony-item cite {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--warm-orange);
+    font-style: normal;
+}
+
+/* 8. CTA */
+.cta-section {
+    padding: 100px 20px;
+    background-color: white;
+}
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.cta-content p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 2.8rem; }
+    .highlight-content { padding: 30px; }
+}
