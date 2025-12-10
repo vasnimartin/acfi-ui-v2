@@ -18,7 +18,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private isBrowser: boolean;
   
   currentUser: User | null = null;
+  currentUserRole: string | null = null;
   private authSubscription: Subscription | null = null;
+  private roleSubscription: Subscription | null = null;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -32,11 +34,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authSubscription = this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
+    this.roleSubscription = this.authService.currentUserRole$.subscribe(role => {
+      this.currentUserRole = role;
+    });
   }
 
   ngOnDestroy() {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
     }
   }
 

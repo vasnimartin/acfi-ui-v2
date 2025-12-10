@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './home/home-page/home-page.component';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -57,5 +58,11 @@ export const routes: Routes = [
     ]
   },
   { path: 'contact', loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent) },
-  { path: 'jobs', loadComponent: () => import('./jobs/jobs.component').then(m => m.JobsComponent) }
+  { path: 'jobs', loadComponent: () => import('./jobs/jobs.component').then(m => m.JobsComponent) },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES),
+    canActivate: [roleGuard],
+    data: { roles: ['admin', 'pastor', 'media'] }
+  }
 ];

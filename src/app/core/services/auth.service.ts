@@ -3,24 +3,43 @@ import { createClient, SupabaseClient, User, Session } from '@supabase/supabase-
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
+export interface UserProfile {
+  id: string;
+  email: string;
+  role: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private supabase: SupabaseClient;
   private _currentUser = new BehaviorSubject<User | null>(null);
+  private _currentUserRole = new BehaviorSubject<string | null>(null);
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-    
+
     // Initialize session
     this.supabase.auth.getSession().then(({ data }) => {
-      this._currentUser.next(data.session?.user ?? null);
+      const user = data.session?.user ?? null;
+      this._currentUser.next(user);
+      if (user) {
+        this.loadUserRole(user.id);
+      } else {
+        this._currentUserRole.next(null);
+      }
     });
 
     // Listen for auth changes
     this.supabase.auth.onAuthStateChange((_event, session) => {
-      this._currentUser.next(session?.user ?? null);
+      const user = session?.user ?? null;
+      this._currentUser.next(user);
+      if (user) {
+        this.loadUserRole(user.id);
+      } else {
+        this._currentUserRole.next(null);
+      }
     });
   }
 
@@ -28,8 +47,33 @@ export class AuthService {
     return this._currentUser.asObservable();
   }
 
+  get currentUserRole$(): Observable<string | null> {
+    return this._currentUserRole.asObservable();
+  }
+
   get currentUserValue(): User | null {
     return this._currentUser.value;
+  }
+
+  private async loadUserRole(userId: string) {
+    const { data, error } = await this.supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error loading user role:', error);
+      this._currentUserRole.next('member'); // Default fallback
+    } else {
+      this._currentUserRole.next(data?.role ?? 'member');
+    }
+  }
+
+  hasAnyRole(allowedRoles: string[]): boolean {
+    const currentRole = this._currentUserRole.value;
+    if (!currentRole) return false;
+    return allowedRoles.includes(currentRole);
   }
 
   async signInWithGoogle() {
@@ -45,7 +89,7 @@ export class AuthService {
         redirectTo: redirectUrl
       }
     });
-    
+
     if (error) {
       console.error('Error signing in with Google:', error);
       throw error;
@@ -58,5 +102,6 @@ export class AuthService {
       console.error('Error signing out:', error);
       throw error;
     }
+    this._currentUserRole.next(null);
   }
 }
