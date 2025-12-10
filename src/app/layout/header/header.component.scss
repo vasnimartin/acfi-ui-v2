@@ -11,8 +11,14 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Softer, deeper shadow */
     transition: all 0.3s ease;
+    
+    /* Vibrant Accent Border */
+    border-top: 4px solid transparent;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), var(--gradient-gold);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
 }
 
 .site-header.scrolled {

@@ -49,6 +49,13 @@ export const routes: Routes = [
       { path: 'prayer-request', loadComponent: () => import('./resources/prayer-request/prayer-request.component').then(m => m.PrayerRequestComponent) }
     ]
   },
+  {
+    path: 'give',
+    children: [
+      { path: 'online-giving', loadComponent: () => import('./give/online-giving/online-giving.component').then(m => m.OnlineGivingComponent) },
+      { path: 'building-fund', loadComponent: () => import('./give/building-fund/building-fund.component').then(m => m.BuildingFundComponent) }
+    ]
+  },
   { path: 'contact', loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent) },
   { path: 'jobs', loadComponent: () => import('./jobs/jobs.component').then(m => m.JobsComponent) }
 ];

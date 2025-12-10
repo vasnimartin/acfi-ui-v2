@@ -2,8 +2,8 @@
     <div class="container">
         <div class="header-inner">
             <a routerLink="/" class="logo" (click)="closeMenu()">
-                <span class="logo-text">ACFI</span>
-                <span class="logo-sub">Church</span>
+                <span class="logo-text">Austin Christian Fellowship of India</span>
+                <span class="logo-sub">Mission • Prayer • Children</span>
             </a>
 
             <button class="mobile-toggle" [class.active]="menuOpen" aria-label="Toggle Navigation"
@@ -26,7 +26,7 @@
                             <li><a routerLink="/about/statement-of-faith" (click)="closeMenu()">Statement of Faith</a>
                             </li>
                             <li><a routerLink="/about/pastors-welcome" (click)="closeMenu()">Pastor's Welcome</a></li>
-                            <li><a routerLink="/about/timeline" (click)="closeMenu()">ACFI Church Themes</a></li>
+                            <li><a routerLink="/about/timeline" (click)="closeMenu()">Church Themes</a></li>
                         </ul>
                     </li>
 
@@ -91,8 +91,8 @@
                         <a class="nav-link" (click)="toggleDropdown('give', $event)">Give <i
                                 class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a href="#" (click)="closeMenu()">Online Giving</a></li>
-                            <li><a href="#" (click)="closeMenu()">Building Fund</a></li>
+                            <li><a routerLink="/give/online-giving" (click)="closeMenu()">Online Giving</a></li>
+                            <li><a routerLink="/give/building-fund" (click)="closeMenu()">Building Fund</a></li>
                         </ul>
                     </li>
 

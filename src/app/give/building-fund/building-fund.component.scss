@@ -1,0 +1,173 @@
+/* Building Fund Styles */
+
+.fund-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+/* Vision Text */
+.vision-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.vision-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 25px;
+}
+
+.fund-text {
+    font-size: 1.15rem;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+/* Progress Bar */
+.progress-container {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 40px 0;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    color: var(--primary-blue);
+}
+
+.raised {
+    color: var(--accent-gold);
+}
+
+.progress-bar-track {
+    width: 100%;
+    height: 12px;
+    background-color: #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-image: var(--gradient-gold); /* Using the new vibrant gradient */
+    border-radius: 6px;
+    transition: width 1s ease-out;
+}
+
+.progress-note {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-top: 10px;
+    text-align: right;
+    font-style: italic;
+}
+
+/* Donate Button */
+.btn-donate-fund {
+    display: inline-block;
+    padding: 16px 40px;
+    background-color: var(--primary-blue);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(11, 26, 51, 0.2);
+}
+
+.btn-donate-fund:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Visual Side */
+.fund-visual {
+    display: flex;
+    justify-content: center;
+}
+
+.scripture-box {
+    background: var(--primary-blue);
+    color: white;
+    padding: 60px 40px;
+    text-align: center;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scripture-box::before {
+    /* Decorative overlay */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.scripture-box i {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 25px;
+}
+
+.scripture-box h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--accent-gold);
+}
+
+.scripture-box p {
+    font-size: 1.25rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.scripture-box .ref {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-style: normal;
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .fund-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .vision-title {
+        font-size: 2rem;
+    }
+}

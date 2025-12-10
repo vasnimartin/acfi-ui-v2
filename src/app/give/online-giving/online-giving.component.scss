@@ -1,0 +1,137 @@
+/* Online Giving Styles */
+
+.give-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+}
+
+.give-text {
+    font-size: 1.15rem;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+.section-heading-left {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+}
+
+/* Giving Methods Grid */
+.give-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.method-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    transition: var(--transition);
+}
+
+.method-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    border-color: var(--accent-warm);
+}
+
+.method-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--section-slate);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.method-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--primary-blue);
+    margin: 0;
+}
+
+.method-card p {
+    color: var(--text-dark);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.btn-give-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--primary-blue);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.btn-give-primary:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-blue);
+}
+
+/* Sidebar */
+.sidebar-card {
+    background: var(--section-slate);
+    padding: 40px;
+    border-radius: 8px;
+    position: sticky;
+    top: 120px; /* Sticky below header */
+}
+
+.sidebar-card h3 {
+    font-family: var(--font-heading);
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.sidebar-card p {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.card-divider {
+    border: 0;
+    height: 1px;
+    background-color: #cbd5e1;
+    margin: 30px 0;
+}
+
+.sidebar-card a {
+    color: var(--primary-blue);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .give-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .sidebar-card {
+        position: static;
+    }
+}

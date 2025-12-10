@@ -1,26 +1,31 @@
 /* Global Styles & Variables */
 :root {
-    --primary-blue: #0f172a; /* Deep Navy - almost black for modern feel */
-    --accent-gold: #d4af37; /* Metallic Gold */
+    --primary-blue: #0B1120; /* Deeper, richer Navy */
+    --accent-gold: #DAA520; /* Goldenrod - more vibrant than standard metallic */
+    --accent-gold-bright: #F4C430; /* Bright Saffron for highlights */
     --text-light: #f8fafc;
-    --text-dark: #334155;
+    --text-dark: #1e293b; /* Slightly richer dark gray */
     --font-heading: 'Cinzel', serif;
     --font-body: 'Lato', sans-serif;
     --header-height: 80px;
-    --transition: all 0.3s ease;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother definition */
+    
+    /* Branding Gradients */
+    --gradient-primary: linear-gradient(135deg, #0B1120 0%, #1e3a8a 100%);
+    --gradient-gold: linear-gradient(135deg, #DAA520 0%, #F4C430 100%);
     
     /* Christmas Theme Colors */
-    --christmas-gold: #e7c679;
-    --christmas-blue: #0d1b3d;
+    --christmas-gold: #ecc97d;
+    --christmas-blue: #0a1633;
     --christmas-white: #ffffff;
     
     /* Enhanced Section Colors */
-    --section-cream: #FFF9F0;       /* Warm cream for welcoming feel */
-    --section-slate: #f1f5f9;       /* Cool gray-blue */
-    --section-navy: #0f172a;        /* Dark navy for contrast sections */
-    --section-navy-light: #1e3a5f;  /* Lighter navy for gradients */
-    --accent-warm: #E8D5B7;         /* Warm accent */
-    --gold-soft: #f5e6c8;           /* Soft gold for subtle accents */
+    --section-cream: #FFFCF7;       /* Warmer, cleaner cream */
+    --section-slate: #f0f4f8;       /* Crisp cool gray */
+    --section-navy: #0B1120;        /* Matching primary */
+    --section-navy-light: #162a47;  /* Slightly lighter for variation */
+    --accent-warm: #E8D5B7;
+    --gold-soft: #faeacc;
 }
 
 * {
@@ -44,9 +49,6 @@ body {
     
     /* Smooth momentum scrolling for iOS/Safari */
     -webkit-overflow-scrolling: touch;
-    
-    /* Subtle scroll snap for sections */
-    scroll-snap-type: y proximity;
 }
 
 a {
@@ -76,8 +78,6 @@ ul {
 .page-section, .section-classic {
     padding: 100px 0;
     position: relative;
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
 }
 
 /* Mobile Section Padding */
@@ -169,13 +169,32 @@ ul {
     justify-content: center;
     line-height: 1.1;
     color: var(--primary-blue);
+    gap: 4px; /* Added breathing room for tagline */
 }
 
 .logo-text {
     font-family: var(--font-heading);
-    font-size: 1.8rem;
+    font-size: 1.25rem; /* Reduced for longer name */
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    max-width: 250px; /* Force wrap if needed, or keep single line depending on preference */
+    line-height: 1.2;
+}
+
+@media (min-width: 1024px) {
+    .logo-text {
+        font-size: 1.4rem;
+        max-width: none;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text {
+        font-size: 0.95rem; /* Smaller for mobile */
+        max-width: 200px;
+        white-space: normal; /* Allow wrapping on very small screens */
+    }
 }
 
 .logo-sub {
