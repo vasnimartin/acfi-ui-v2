@@ -99,6 +99,21 @@
                     <li class="nav-item contact-item">
                         <a routerLink="/contact" class="nav-link" (click)="closeMenu()">Contact</a>
                     </li>
+
+                    <!-- Auth Items -->
+                    <li class="nav-item auth-item" *ngIf="!currentUser">
+                        <a (click)="login(); closeMenu()" class="nav-link" style="cursor: pointer;">Login</a>
+                    </li>
+
+                    <li class="nav-item has-dropdown auth-item" *ngIf="currentUser"
+                        [class.active]="activeDropdown === 'user'">
+                        <a class="nav-link" (click)="toggleDropdown('user', $event)" style="cursor: pointer;">
+                            {{ currentUser.email }} <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown">
+                            <li><a (click)="logout(); closeMenu()" style="cursor: pointer;">Logout</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>
