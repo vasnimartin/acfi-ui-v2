@@ -55,8 +55,8 @@ export class PrayerRequestFormComponent {
       request_text: this.requestText,
       is_private: this.isPrivate,
       user_id: this.userId || undefined,
-      submitter_name: this.isLoggedIn ? this.userFullName : this.submitterName,
-      submitter_email: !this.isLoggedIn ? this.submitterEmail : undefined
+      submitter_name: this.isLoggedIn ? (this.userFullName || undefined) : (this.submitterName || undefined),
+      submitter_email: !this.isLoggedIn ? (this.submitterEmail || undefined) : undefined
     };
 
     this.prayerRequestService.submitPrayerRequest(request).subscribe({
