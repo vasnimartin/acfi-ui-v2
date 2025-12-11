@@ -7,9 +7,9 @@ import { MediaAdminComponent } from './media/media-admin.component';
 import { SermonsAdminComponent } from './sermons/sermons-admin.component';
 import { RolesAdminComponent } from './people/people-admin.component';
 import { PrayerRequestsAdminComponent } from './prayer-requests/prayer-requests-admin.component';
+import { MinistriesAdminComponent } from './ministries/ministries-admin.component';
 
 // Placeholder components for now
-@Component({ selector: 'admin-ministries', template: '<h2>Manage Ministries</h2><p>Coming soon...</p>', standalone: true }) class MinistriesAdminComponent {}
 @Component({ selector: 'admin-timeline', template: '<h2>Manage Timeline</h2><p>Coming soon...</p>', standalone: true }) class TimelineAdminComponent {}
 
 export const ADMIN_ROUTES: Routes = [

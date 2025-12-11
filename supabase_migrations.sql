@@ -106,3 +106,70 @@ create policy "Admins can delete requests"
       and profiles.role in ('admin', 'pastor')
     )
   );
+
+-- Create ministries table
+CREATE TABLE IF NOT EXISTS public.ministries (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT,
+  leader_name TEXT,
+  contact_email TEXT,
+  meeting_schedule TEXT,
+  image_url TEXT,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS on ministries
+ALTER TABLE public.ministries ENABLE ROW LEVEL SECURITY;
+
+-- Public can view active ministries
+CREATE POLICY "Anyone can view active ministries"
+  ON ministries FOR SELECT
+  USING ( is_active = true );
+
+-- Admins can view all ministries
+CREATE POLICY "Admins can view all ministries"
+  ON ministries FOR SELECT
+  USING ( 
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.role IN ('admin', 'pastor')
+    )
+  );
+
+-- Admins can insert ministries
+CREATE POLICY "Admins can insert ministries"
+  ON ministries FOR INSERT
+  WITH CHECK ( 
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.role IN ('admin', 'pastor')
+    )
+  );
+
+-- Admins can update ministries
+CREATE POLICY "Admins can update ministries"
+  ON ministries FOR UPDATE
+  USING ( 
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.role IN ('admin', 'pastor')
+    )
+  );
+
+-- Admins can delete ministries
+CREATE POLICY "Admins can delete ministries"
+  ON ministries FOR DELETE
+  USING ( 
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.role IN ('admin', 'pastor')
+    )
+  );
+
