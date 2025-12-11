@@ -55,7 +55,7 @@ export class PrayerRequestService {
         .from('prayer_requests')
         .select(`
           *,
-          profiles:user_id (
+          profiles!user_id (
             full_name,
             email
           )
