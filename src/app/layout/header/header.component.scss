@@ -41,3 +41,39 @@
     align-items: center;
     height: 100%;
 }
+
+.user-id {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically align text block */
+    line-height: 1.2;
+    text-align: right;
+    margin-right: 8px; /* Spacing for chevron */
+}
+
+/* Ensure the nav-link inside auth-item behaves as a clean row */
+.auth-item .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Or center depending on pref, but flex-end for right-aligned nav */
+    gap: 0; /* Remove default gap to control precise spacing */
+}
+
+.role-tag {
+    font-size: 0.65rem; /* Slightly smaller for better fit */
+    text-transform: uppercase;
+    color: #DAA520; /* Gold */
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    display: block; /* Ensure it sits on its own line */
+    margin-top: 2px; /* Breathing room */
+}
+
+.role-link-item a {
+    color: #DAA520 !important;
+    font-weight: 600 !important;
+}
+
+.role-link-item i {
+    margin-right: 6px;
+}

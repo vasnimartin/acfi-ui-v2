@@ -1,0 +1,211 @@
+/* ==========================================================================
+   Global Admin Theme
+   Standardized styles for all admin pages (Events, Sermons, Media, etc.)
+   ========================================================================== */
+
+/* Variables */
+$admin-bg: #F8FAFC;
+$admin-text: #1E293B;
+$admin-text-light: #64748B;
+$admin-border: #E2E8F0;
+$admin-primary: #D4AF37; /* Muted Gold */
+$admin-primary-hover: #B4941F;
+$admin-danger: #EF4444;
+
+/* Utilities */
+.admin-page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+    min-height: calc(100vh - 80px); /* Fill remaining height */
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Page Headers */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    border-bottom: 1px solid $admin-border;
+    padding-bottom: 24px;
+}
+
+.admin-title-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-page-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    color: #0F172A;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+}
+
+.admin-page-subtitle {
+    font-family: 'Lato', sans-serif;
+    color: $admin-text-light;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Toolbars (Filters & Search) */
+.admin-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    background: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid $admin-border;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.admin-search-box {
+    position: relative;
+    width: 320px;
+
+    i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94A3B8;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 16px 12px 40px;
+        border: 1px solid $admin-border;
+        border-radius: 8px;
+        font-family: 'Lato', sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: $admin-primary;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+    }
+}
+
+/* Buttons */
+.btn-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    font-family: 'Lato', sans-serif;
+}
+
+.btn-admin-primary {
+    @extend .btn-admin;
+    background: linear-gradient(135deg, #D4AF37 0%, #C5A028 100%);
+    color: white;
+    box-shadow: 0 4px 6px rgba(212, 175, 55, 0.2);
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+    }
+}
+
+.btn-admin-secondary {
+    @extend .btn-admin;
+    background: white;
+    color: $admin-text;
+    border: 1px solid $admin-border;
+
+    &:hover {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+        color: #0F172A;
+    }
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: $admin-text-light;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: #F1F5F9;
+        color: $admin-text;
+    }
+
+    &.delete:hover {
+        background: #FEF2F2;
+        color: $admin-danger;
+    }
+}
+
+/* Cards & Lists */
+.admin-card {
+    background: white;
+    border: 1px solid $admin-border;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        border-color: $admin-primary;
+    }
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px;
+}
+
+/* Empty States */
+.admin-empty-state {
+    text-align: center;
+    padding: 80px 24px;
+    background: white;
+    border-radius: 16px;
+    border: 2px dashed $admin-border;
+
+    i {
+        font-size: 4rem;
+        color: #E2E8F0;
+        margin-bottom: 24px;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        color: #0F172A;
+        margin-bottom: 8px;
+    }
+
+    p {
+        color: $admin-text-light;
+        margin-bottom: 32px;
+    }
+}

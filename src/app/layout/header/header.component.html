@@ -108,13 +108,37 @@
                     <li class="nav-item has-dropdown auth-item" *ngIf="currentUser"
                         [class.active]="activeDropdown === 'user'">
                         <a class="nav-link" (click)="toggleDropdown('user', $event)" style="cursor: pointer;">
-                            {{ currentUser.email }} <i class="fa-solid fa-chevron-down"></i>
+                            <span class="user-id" *ngIf="getEmailPrefix(currentUser) as emailPrefix">
+                                {{ emailPrefix }}
+                                <small *ngIf="!isLoading && currentUserRole" class="role-tag">{{ currentUserRole
+                                    }}</small>
+                            </span>
+                            <!-- Fallback if email is missing -->
+                            <span class="user-id" *ngIf="!currentUser?.email">
+                                Member
+                            </span>
+                            <i class="fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="dropdown">
-                            <li *ngIf="currentUserRole && ['admin', 'pastor', 'media'].includes(currentUserRole)">
-                                <a routerLink="/admin" (click)="closeMenu()">Admin</a>
+                            <li><a routerLink="/dashboard" (click)="closeMenu()">My Dashboard</a></li>
+
+                            <!-- Role Based Access Link -->
+                            <li *ngIf="!isLoading && currentUserRole && ['admin', 'pastor', 'media'].includes(currentUserRole)"
+                                class="role-link-item">
+                                <a routerLink="/admin" (click)="closeMenu()">
+                                    <i class="fa-solid fa-layer-group"></i> {{ getRoleLabel() }}
+                                </a>
                             </li>
-                            <li><a (click)="logout(); closeMenu()" style="cursor: pointer;">Logout</a></li>
+
+                            <!-- Logout -->
+                            <li>
+                                <a (click)="logout(); closeMenu()" style="cursor: pointer;"
+                                    [class.disabled]="isLoggingOut">
+                                    <span *ngIf="!isLoggingOut">Logout</span>
+                                    <span *ngIf="isLoggingOut"><i class="fa-solid fa-circle-notch fa-spin"></i> Signing
+                                        out...</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

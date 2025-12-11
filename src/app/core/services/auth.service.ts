@@ -1,12 +1,18 @@
-import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient, User, Session } from '@supabase/supabase-js';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { SupabaseClient, User, Session } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { SupabaseService } from './supabase.service';
+import { ToastService } from './toast.service';
 
 export interface UserProfile {
   id: string;
   email: string;
   role: string;
+  full_name?: string;
+  phone?: string;
+  address?: string;
 }
 
 @Injectable({
@@ -14,33 +20,59 @@ export interface UserProfile {
 })
 export class AuthService {
   private supabase: SupabaseClient;
+  private isBrowser: boolean;
   private _currentUser = new BehaviorSubject<User | null>(null);
   private _currentUserRole = new BehaviorSubject<string | null>(null);
+  private _currentUserProfile = new BehaviorSubject<UserProfile | null>(null);
+  private _authLoading = new BehaviorSubject<boolean>(true);
 
-  constructor() {
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router,
+    private supabaseService: SupabaseService,
+    private toastService: ToastService
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    this.supabase = this.supabaseService.client; // Singleton instance
 
-    // Initialize session
-    this.supabase.auth.getSession().then(({ data }) => {
-      const user = data.session?.user ?? null;
-      this._currentUser.next(user);
-      if (user) {
-        this.loadUserRole(user.id);
-      } else {
-        this._currentUserRole.next(null);
-      }
-    });
+    if (this.isBrowser) {
+      this.supabase.auth.getSession().then(({ data }) => {
+        const user = data.session?.user ?? null;
+        this._currentUser.next(user);
+        if (user) {
+          this.loadUserProfile(user.id);
+        } else {
+          this.clearUserState();
+          this._authLoading.next(false);
+        }
+      });
 
-    // Listen for auth changes
-    this.supabase.auth.onAuthStateChange((_event, session) => {
-      const user = session?.user ?? null;
-      this._currentUser.next(user);
-      if (user) {
-        this.loadUserRole(user.id);
-      } else {
-        this._currentUserRole.next(null);
-      }
-    });
+      this.supabase.auth.onAuthStateChange((_event, session) => {
+        const user = session?.user ?? null;
+        this._currentUser.next(user);
+        
+        if (_event === 'SIGNED_OUT') {
+           this.clearUserState();
+           this._authLoading.next(false);
+        } else if (user) {
+           if (this._currentUserProfile.value?.id !== user.id) {
+               this._authLoading.next(true); 
+               this.loadUserProfile(user.id);
+           }
+        }
+      });
+    } else {
+        this._authLoading.next(false);
+    }
+  }
+
+  private clearUserState() {
+    this._currentUserRole.next(null);
+    this._currentUserProfile.next(null);
+  }
+
+  get authLoading$(): Observable<boolean> {
+    return this._authLoading.asObservable();
   }
 
   get currentUser$(): Observable<User | null> {
@@ -51,38 +83,113 @@ export class AuthService {
     return this._currentUserRole.asObservable();
   }
 
+  get currentUserProfile$(): Observable<UserProfile | null> {
+    return this._currentUserProfile.asObservable();
+  }
+
   get currentUserValue(): User | null {
     return this._currentUser.value;
   }
 
-  private async loadUserRole(userId: string) {
-    const { data, error } = await this.supabase
+  private async loadUserProfile(userId: string) {
+    // 406 Error Fix: Select * is usually fine, but .single() throws if row missing.
+    // 'maybeSingle()' suppresses error if 0 rows, returns null data.
+    const { data: profile, error } = await this.supabase
       .from('profiles')
-      .select('role')
+      .select('id, email, full_name, role, phone, address')
       .eq('id', userId)
-      .single();
+      .maybeSingle(); 
 
     if (error) {
-      console.error('Error loading user role:', error);
-      this._currentUserRole.next('member'); // Default fallback
+      console.error('[AuthService] DB Error fetching profile:', error);
+      this._authLoading.next(false);
+      return; 
+    }
+
+    if (!profile) {
+      console.warn('[AuthService] Profile missing (not 406), attempting creation...');
+      await this.createProfile(userId);
+      return;
+    }
+
+    // Success
+    const rawRole = profile.role || 'member';
+    const normalizedRole = rawRole.toLowerCase();
+
+    const userProfile: UserProfile = {
+      id: profile.id,
+      email: this._currentUser.value?.email || profile.email || '',
+      role: normalizedRole,
+      full_name: profile.full_name,
+      phone: profile.phone,
+      address: profile.address
+    };
+    
+    this._currentUserRole.next(userProfile.role);
+    this._currentUserProfile.next(userProfile);
+    this._authLoading.next(false);
+  }
+
+  private async createProfile(userId: string) {
+    const user = this._currentUser.value;
+    if (!user) {
+        this._authLoading.next(false);
+        return;
+    }
+
+    const newProfile = {
+      id: userId,
+      email: user.email,
+      full_name: user.user_metadata?.['full_name'] || user.email?.split('@')[0] || 'Member',
+      role: 'member',
+      updated_at: new Date()
+    };
+
+    // Use upsert to handle race conditions where the trigger might have already created it
+    const { error } = await this.supabase.from('profiles').upsert(newProfile);
+
+    if (error) {
+      console.error('Failed to auto-create (upsert) profile:', error);
+      // If error is 409 (Conflict), we can safely ignore it and reload, as it means it exists.
+      if (error.code === '23505' || error.message.includes('duplicate key')) {
+         console.warn('Profile existed (race condition), reloading...');
+         this.loadUserProfile(userId);
+         return;
+      }
+
+      this.toastService.error('Failed to create user profile. Please contact support.');
+      this._currentUserRole.next('member'); // Temporary fallback
+      this._authLoading.next(false);
     } else {
-      this._currentUserRole.next(data?.role ?? 'member');
+      console.log('Profile auto-created/updated successfully. Reloading...');
+      this.loadUserProfile(userId);
     }
   }
 
-  hasAnyRole(allowedRoles: string[]): boolean {
-    const currentRole = this._currentUserRole.value;
-    if (!currentRole) return false;
-    return allowedRoles.includes(currentRole);
+  async updateProfile(profile: Partial<UserProfile>): Promise<void> {
+    const user = this._currentUser.value;
+    if (!user) throw new Error('No user logged in');
+
+    const updates = {
+      id: user.id,
+      updated_at: new Date(),
+      email: user.email,
+      full_name: profile.full_name,
+      phone: profile.phone,
+      address: profile.address,
+    };
+
+    const { error } = await this.supabase.from('profiles').upsert(updates);
+
+    if (error) {
+      throw error;
+    }
+
+    await this.loadUserProfile(user.id);
   }
 
   async signInWithGoogle() {
     const redirectUrl = window.location.origin;
-    console.log('--- SUPABASE LOGIN DEBUG ---');
-    console.log('App URL (Origin):', redirectUrl);
-    console.log('Sending redirectTo:', redirectUrl);
-    console.log('----------------------------');
-
     const { error } = await this.supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -100,8 +207,8 @@ export class AuthService {
     const { error } = await this.supabase.auth.signOut();
     if (error) {
       console.error('Error signing out:', error);
-      throw error;
     }
-    this._currentUserRole.next(null);
+    this.clearUserState();
+    this.router.navigate(['/']);
   }
 }

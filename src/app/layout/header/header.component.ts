@@ -19,8 +19,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
   currentUser: User | null = null;
   currentUserRole: string | null = null;
+  isLoading = true; // Add loading state
   private authSubscription: Subscription | null = null;
   private roleSubscription: Subscription | null = null;
+  private loadingSubscription: Subscription | null = null; // New subscription
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -37,6 +39,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.roleSubscription = this.authService.currentUserRole$.subscribe(role => {
       this.currentUserRole = role;
     });
+    // Subscribe to loading state
+    this.loadingSubscription = this.authService.authLoading$.subscribe(loading => {
+        this.isLoading = loading;
+    });
   }
 
   ngOnDestroy() {
@@ -46,14 +52,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.roleSubscription) {
       this.roleSubscription.unsubscribe();
     }
+    if (this.loadingSubscription) {
+        this.loadingSubscription.unsubscribe();
+    }
   }
+
+  isLoggingOut = false; // New state
 
   login() {
     this.authService.signInWithGoogle();
   }
 
-  logout() {
-    this.authService.signOut();
+  async logout() {
+    if (this.isLoggingOut) return;
+    this.isLoggingOut = true;
+    try {
+        await this.authService.signOut();
+    } finally {
+        this.isLoggingOut = false;
+    }
   }
 
   toggleMenu() {
@@ -80,6 +97,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
   
+  getRoleLabel(): string {
+    switch (this.currentUserRole) {
+      case 'admin': return 'Global Admin';
+      case 'pastor': return 'Pastor Portal';
+      case 'media': return 'Media Suite';
+      default: return 'Member Dashboard';
+    }
+  }
+
+  getEmailPrefix(user: any): string {
+    return user?.email?.split('@')[0] || '';
+  }
+
   closeMenu() {
     this.menuOpen = false;
     this.activeDropdown = null;

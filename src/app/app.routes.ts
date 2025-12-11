@@ -59,6 +59,34 @@ export const routes: Routes = [
   },
   { path: 'contact', loadComponent: () => import('./contact/contact.component').then(m => m.ContactComponent) },
   { path: 'jobs', loadComponent: () => import('./jobs/jobs.component').then(m => m.JobsComponent) },
+  { 
+    path: 'dashboard', 
+    loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+    // Simple check: user must be logged in. We can reuse roleGuard if we want strict 'member' role check,
+    // or create an AuthGuard. For now, let's assume if you have a role (even member), you can access it.
+    // Reusing roleGuard with implicit 'member' requirement or just letting it be accessible to any auth user?
+    // Let's use roleGuard with 'member' which covers everyone in ACFI usually.
+    canActivate: [roleGuard],
+    data: { roles: ['member', 'admin', 'pastor', 'media'] }
+  },
+  { 
+    path: 'volunteer', 
+    loadComponent: () => import('./dashboard/volunteer/volunteer.component').then(m => m.VolunteerComponent),
+    canActivate: [roleGuard],
+    data: { roles: ['member', 'admin', 'pastor', 'media'] }
+  },
+  { 
+    path: 'prayer-requests', 
+    loadComponent: () => import('./dashboard/prayer-requests/prayer-requests.component').then(m => m.PrayerRequestsComponent),
+    canActivate: [roleGuard],
+    data: { roles: ['member', 'admin', 'pastor', 'media'] }
+  },
+  { 
+    path: 'directory', 
+    loadComponent: () => import('./dashboard/directory/directory.component').then(m => m.DirectoryComponent),
+    canActivate: [roleGuard],
+    data: { roles: ['member', 'admin', 'pastor', 'media'] }
+  },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES),

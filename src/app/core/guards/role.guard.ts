@@ -1,40 +1,51 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { map, filter, take, tap } from 'rxjs/operators';
+import { map, filter, take, tap, switchMap } from 'rxjs/operators';
 
 export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const requiredRoles = route.data['roles'] as Array<string>;
 
-  // Wait for the role to be loaded (not undefined)
-  return authService.currentUserRole$.pipe(
-    // You might want to filter out the initial null if you are strict, 
-    // but here we just check if value is available or wait for auth.
-    // However, since behavior subject has initial value, we rely on auth flow.
-    // For simplicity, we just take the current value effectively.
-    // Note: In a real app, you might need to wait for an 'authInitialized' signal.
-    // Here we leverage the fact that loadUserRole is called early. 
-    // A more robust way is to filter(role => role !== undefined) if we had a loading state.
-    take(1), 
+  // Combine the loading state with the role
+  // We want to wait until not loading, then check role
+  /* 
+     New Logic:
+     1. SwitchMap to authLoading$.
+     2. If loading is true, we act as 'waiting' (can't easily block routing synchronously without a promise or observable completion).
+     3. Actually, we take Role and Loading. We assume guard waits for Observable completion or emission.
+  */
+  
+  // Wait for loading to finish, then check role
+  return authService.authLoading$.pipe(
+    filter(loading => loading === false),
+    take(1),
+    switchMap(() => authService.currentUserRole$),
+    // Instead of just taking the role, we should filter for it to be resolved if we want to be strict,
+    // but here we just take the state after loading is done.
+    take(1),
     map(role => {
       const user = authService.currentUserValue;
-      
       if (!user) {
-        // Not logged in
-        return router.createUrlTree(['/']); // Redirect to home or login popup
+        // Not logged in -> Home
+        return router.createUrlTree(['/']);
       }
-
-      const hasRole = requiredRoles ? requiredRoles.includes(role || '') : true;
-
-      if (hasRole) {
-        return true;
+      
+      if (requiredRoles && requiredRoles.length > 0) {
+          if (role && requiredRoles.includes(role)) {
+              return true;
+          }
+          // Role loaded but not in allowed list -> Home
+          // Could redirect to a 'Forbidden' page or Dashboard if they are generic members
+          if (!role || role === 'member') {
+              return router.createUrlTree(['/dashboard']);
+          }
+          return router.createUrlTree(['/']);
       }
-
-      // Logged in but no permission
-      // alert('You do not have permission to access this page'); 
-      return router.createUrlTree(['/']);
+      
+      // No specific roles required, just auth
+      return true;
     })
   );
 };

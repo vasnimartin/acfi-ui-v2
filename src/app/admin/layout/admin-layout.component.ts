@@ -1,62 +1,70 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AdminSidebarComponent } from './sidebar/admin-sidebar.component';
+import { AdminTopbarComponent } from './topbar/admin-topbar.component';
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AdminSidebarComponent, AdminTopbarComponent],
   template: `
-    <div class="admin-container">
-      <aside class="admin-sidebar">
-        <div class="sidebar-header">
-          <h3>Admin Panel</h3>
-        </div>
-        <nav class="sidebar-nav">
-          <a routerLink="./events" routerLinkActive="active">Events</a>
-          <a routerLink="./ministries" routerLinkActive="active">Ministries</a>
-          <a routerLink="./sermons" routerLinkActive="active">Sermons</a>
-          <a routerLink="./timeline" routerLinkActive="active">Timeline</a>
-          <a routerLink="./media" routerLinkActive="active">Media</a>
-        </nav>
-      </aside>
-      <main class="admin-content">
-        <router-outlet></router-outlet>
-      </main>
+    <div class="admin-wrapper">
+      <div class="admin-sidebar-col">
+          <app-admin-sidebar></app-admin-sidebar>
+      </div>
+      
+      <div class="admin-main-col">
+          <app-admin-topbar></app-admin-topbar>
+          
+          <main class="admin-content-area">
+            <router-outlet></router-outlet>
+          </main>
+      </div>
     </div>
   `,
   styles: [`
-    .admin-container {
+    .admin-wrapper {
       display: flex;
-      min-height: 100vh;
-      margin-top: 80px; /* Offset for main header */
+      min-height: calc(100vh - 160px); /* Approx header+footer height offset */
+      background-color: #F9FAFB;
+      position: relative;
     }
-    .admin-sidebar {
-      width: 250px;
-      background: #f4f4f4;
-      border-right: 1px solid #ddd;
-      padding: 20px;
+
+    .admin-sidebar-col {
+      width: 280px;
+      flex-shrink: 0;
+      background: #0F172A;
+      /* Sticky sidebar logic */
+      position: sticky;
+      top: 0; 
+      height: 100vh; /* Or however tall it needs to be */
+      max-height: 100vh;
+      overflow-y: auto;
     }
-    .sidebar-nav {
+
+    .admin-main-col {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      min-width: 0; /* Prevent overflow */
     }
-    .sidebar-nav a {
-      text-decoration: none;
-      color: #333;
-      padding: 10px;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    .sidebar-nav a:hover, .sidebar-nav a.active {
-      background: #e0e0e0;
-      color: #000;
-      font-weight: bold;
-    }
-    .admin-content {
+
+    .admin-content-area {
+      padding: 32px;
       flex: 1;
-      padding: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .admin-wrapper {
+        flex-direction: column;
+      }
+      .admin-sidebar-col {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+      }
     }
   `]
 })
