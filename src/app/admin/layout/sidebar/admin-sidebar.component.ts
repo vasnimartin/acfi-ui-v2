@@ -112,12 +112,8 @@ import { Observable, map } from 'rxjs';
   styles: [`
     :host {
       display: block;
-      width: 280px;
-      height: 100vh;
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 1000;
+      width: 100%;
+      height: 100%;
     }
 
     .sidebar-container {
@@ -204,10 +200,16 @@ import { Observable, map } from 'rxjs';
       font-weight: 600;
     }
 
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px; /* Increased from 14px to ensure no overlap */
       padding: 12px 16px;
       border-radius: 12px;
       color: rgba(255,255,255,0.7);
@@ -221,6 +223,7 @@ import { Observable, map } from 'rxjs';
 
     .nav-icon {
       width: 24px;
+      min-width: 24px; /* Ensure icon doesn't shrink */
       display: flex;
       justify-content: center;
       font-size: 1.1rem;

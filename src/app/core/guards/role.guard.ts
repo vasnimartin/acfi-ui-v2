@@ -17,28 +17,35 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
      3. Actually, we take Role and Loading. We assume guard waits for Observable completion or emission.
   */
   
-  // Clean implementation:
+  // Wait for loading to finish, then check role
   return authService.authLoading$.pipe(
-    filter(loading => loading === false), // Wait until loading is false
-    take(1), // Take the first 'false' emission (done loading)
-    switchMap(() => authService.currentUserRole$), // Switch to role stream
-    take(1), // Take current role
+    filter(loading => loading === false),
+    take(1),
+    switchMap(() => authService.currentUserRole$),
+    // Instead of just taking the role, we should filter for it to be resolved if we want to be strict,
+    // but here we just take the state after loading is done.
+    take(1),
     map(role => {
       const user = authService.currentUserValue;
-
       if (!user) {
-        return router.createUrlTree(['/']); 
+        // Not logged in -> Home
+        return router.createUrlTree(['/']);
       }
-
-      // User logged in, check role
-      const hasRole = requiredRoles ? requiredRoles.includes(role || '') : true;
-
-      if (hasRole) {
-        return true;
+      
+      if (requiredRoles && requiredRoles.length > 0) {
+          if (role && requiredRoles.includes(role)) {
+              return true;
+          }
+          // Role loaded but not in allowed list -> Home
+          // Could redirect to a 'Forbidden' page or Dashboard if they are generic members
+          if (!role || role === 'member') {
+              return router.createUrlTree(['/dashboard']);
+          }
+          return router.createUrlTree(['/']);
       }
-
-      // Logged in but no permission
-      return router.createUrlTree(['/']);
+      
+      // No specific roles required, just auth
+      return true;
     })
   );
 };

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { environment } from '../../../environments/environment';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseService } from './supabase.service';
 import { from, Observable, map } from 'rxjs';
 
 export interface Sermon {
@@ -21,8 +21,8 @@ export interface Sermon {
 export class SermonService {
   private supabase: SupabaseClient;
 
-  constructor() {
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+  constructor(private supabaseService: SupabaseService) {
+    this.supabase = this.supabaseService.client;
   }
 
   // GET All Sermons

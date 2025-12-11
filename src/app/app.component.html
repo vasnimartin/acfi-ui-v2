@@ -1,7 +1,8 @@
-<app-header *ngIf="!isAdminRoute()"></app-header>
+<app-header></app-header>
+<app-toast></app-toast>
 
 <main class="page-container">
   <router-outlet></router-outlet>
 </main>
 
-<app-footer *ngIf="!isAdminRoute()"></app-footer>
+<app-footer></app-footer>

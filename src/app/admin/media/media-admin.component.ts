@@ -9,19 +9,21 @@ import { MediaService, MediaItem } from '../../core/services/media.service';
   template: `
     <div class="admin-page-container">
       
+    <div class="admin-page-container">
+      
       <!-- Header -->
-      <div class="page-header">
-        <div class="header-content">
-          <h1 class="page-title">Media Library</h1>
-          <p class="page-subtitle">Manage images and videos for sermons, events, and the website.</p>
+      <div class="admin-header">
+        <div class="admin-title-group">
+          <h1 class="admin-page-title">Media Library</h1>
+          <p class="admin-page-subtitle">Manage images and videos for sermons, events, and the website.</p>
         </div>
-        <button class="btn-primary">
+        <button class="btn-admin-primary">
           <i class="fa-solid fa-cloud-arrow-up"></i> Upload Media
         </button>
       </div>
 
       <!-- Filters & Stats -->
-      <div class="filters-bar">
+      <div class="admin-toolbar">
         <div class="tabs">
           <button class="tab-btn" [class.active]="activeFilter === 'all'" (click)="filter('all')">All Media</button>
           <button class="tab-btn" [class.active]="activeFilter === 'sunday'" (click)="filter('sunday')">Sunday Service</button>
@@ -35,7 +37,7 @@ import { MediaService, MediaItem } from '../../core/services/media.service';
         </div>
       </div>
 
-      <!-- Upload Zone (Collapsible or always visible? Let's make it compact) -->
+      <!-- Upload Zone -->
       <div class="upload-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [class.drag-active]="isDragging">
         <div class="upload-content">
           <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
@@ -65,8 +67,8 @@ import { MediaService, MediaItem } from '../../core/services/media.service';
       </div>
 
       <ng-template #emptyState>
-        <div class="empty-state">
-           <i class="fa-regular fa-images empty-icon"></i>
+        <div class="admin-empty-state">
+           <i class="fa-regular fa-images"></i>
            <h3>No media found</h3>
            <p>Upload files to get started.</p>
         </div>
@@ -75,50 +77,39 @@ import { MediaService, MediaItem } from '../../core/services/media.service';
     </div>
   `,
   styles: [`
-    .admin-page-container { max-width: 1200px; margin: 0 auto; }
+    /* Using Global Admin Theme */
     
-    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
-    .page-title { font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 8px 0; }
-    .page-subtitle { color: #6B7280; font-size: 0.95rem; margin: 0; }
-
-    .btn-primary { background: #D4AF37; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; gap: 8px; align-items: center; }
-    .btn-primary:hover { background: #B4941F; }
-
-    .filters-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: white; padding: 8px 16px; border-radius: 12px; border: 1px solid #E5E7EB; }
-    
-    .tabs { display: flex; gap: 4px; }
-    .tab-btn { background: none; border: none; padding: 8px 16px; border-radius: 8px; color: #6B7280; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .tab-btn:hover { background: #F3F4F6; color: #374151; }
-    .tab-btn.active { background: #FEFCE8; color: #D97706; font-weight: 600; }
-
     .storage-indicator { display: flex; align-items: center; gap: 12px; }
-    .storage-text { font-size: 0.85rem; color: #6B7280; }
-    .storage-bar { width: 100px; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; }
+    .storage-text { font-size: 0.85rem; color: #64748B; }
+    .storage-bar { width: 100px; height: 6px; background: #E2E8F0; border-radius: 3px; overflow: hidden; }
     .storage-progress { height: 100%; background: #D4AF37; }
 
-    .upload-zone { border: 2px dashed #D1D5DB; border-radius: 12px; padding: 20px; text-align: center; background: #F9FAFB; margin-bottom: 32px; transition: all 0.2s; }
+    .upload-zone { border: 2px dashed #CBD5E1; border-radius: 12px; padding: 24px; text-align: center; background: #F8FAFC; margin-bottom: 32px; transition: all 0.2s; }
     .upload-zone.drag-active { border-color: #D4AF37; background: #FEFCE8; }
-    .upload-content { display: flex; align-items: center; justify-content: center; gap: 12px; color: #6B7280; }
-    .upload-icon { font-size: 1.2rem; color: #9CA3AF; }
+    .upload-content { display: flex; align-items: center; justify-content: center; gap: 12px; color: #64748B; }
+    .upload-icon { font-size: 1.5rem; color: #94A3B8; }
 
-    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-    .media-card { background: white; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden; }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+    .media-card { background: white; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; transition: all 0.2s; }
+    .media-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: #D4AF37; }
     
-    .media-preview { height: 160px; background-size: cover; background-position: center; position: relative; background-color: #F3F4F6; }
+    .media-preview { height: 160px; background-size: cover; background-position: center; position: relative; background-color: #F1F5F9; }
     .media-type-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.6); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
     
     .media-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 12px; opacity: 0; transition: opacity 0.2s; }
     .media-preview:hover .media-overlay { opacity: 1; }
 
-    .icon-btn { background: white; border: none; width: 36px; height: 36px; border-radius: 50%; color: #374151; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+    .icon-btn { background: white; border: none; width: 36px; height: 36px; border-radius: 50%; color: #1E293B; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
     .icon-btn:hover { transform: scale(1.1); color: #D4AF37; }
-    .icon-btn.delete:hover { color: #DC2626; }
+    .icon-btn.delete:hover { color: #EF4444; }
 
-    .media-info { padding: 12px; border-top: 1px solid #E5E7EB; }
-    .media-name { display: block; font-size: 0.9rem; font-weight: 500; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .media-info { padding: 12px; border-top: 1px solid #E2E8F0; }
+    .media-name { display: block; font-size: 0.9rem; font-weight: 500; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .empty-state { text-align: center; padding: 64px 20px; background: white; border-radius: 12px; border: 1px dashed #E5E7EB; margin-top: 20px; }
-    .empty-icon { font-size: 3rem; color: #D1D5DB; margin-bottom: 16px; }
+    .tabs { display: flex; gap: 4px; }
+    .tab-btn { background: none; border: none; padding: 8px 16px; border-radius: 8px; color: #64748B; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .tab-btn:hover { background: #F1F5F9; color: #1E293B; }
+    .tab-btn.active { background: #FEFCE8; color: #D4AF37; }
   `]
 })
 export class MediaAdminComponent {

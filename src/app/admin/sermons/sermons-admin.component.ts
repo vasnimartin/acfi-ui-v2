@@ -12,26 +12,26 @@ import { SermonFormComponent } from './form/sermon-form.component';
     <div class="admin-page-container">
       
       <!-- Header -->
-      <div class="page-header">
-        <div class="header-content">
-          <h1 class="page-title">Sermons</h1>
-          <p class="page-subtitle">Manage sermon archives, audio, video, and notes.</p>
+      <div class="admin-header">
+        <div class="admin-title-group">
+          <h1 class="admin-page-title">Sermons</h1>
+          <p class="admin-page-subtitle">Manage sermon archives, audio, video, and notes.</p>
         </div>
-        <button class="btn-primary" (click)="openAddModal()">
+        <button class="btn-admin-primary" (click)="openAddModal()">
           <i class="fa-solid fa-plus"></i> Add Sermon
         </button>
       </div>
 
       <!-- Filters & Search -->
-      <div class="filters-bar">
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <div class="admin-toolbar">
+        <div class="admin-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="Search by title, speaker..." [(ngModel)]="searchQuery" (ngModelChange)="filterSermons()">
         </div>
         
         <div class="filters-group">
-           <span class="filter-label">Filter by:</span>
-           <select class="filter-select" (change)="filterSermons()">
+           <span class="filter-label" style="margin-right:8px; font-weight:600; color:#64748B;">Filter by:</span>
+           <select class="filter-select" (change)="filterSermons()" style="padding: 8px; border-radius: 6px; border: 1px solid #E2E8F0;">
              <option value="all">All Speakers</option>
            </select>
         </div>
@@ -69,11 +69,11 @@ import { SermonFormComponent } from './form/sermon-form.component';
       </div>
 
       <ng-template #emptyState>
-        <div class="empty-state">
-           <i class="fa-solid fa-book-bible empty-icon"></i>
+        <div class="admin-empty-state">
+           <i class="fa-solid fa-book-bible"></i>
            <h3>No sermons found</h3>
            <p>Upload your first sermon to get started.</p>
-           <button class="btn-secondary" (click)="openAddModal()">Add Sermon</button>
+           <button class="btn-admin-secondary" (click)="openAddModal()">Add Sermon</button>
         </div>
       </ng-template>
 
@@ -88,40 +88,25 @@ import { SermonFormComponent } from './form/sermon-form.component';
     </div>
   `,
   styles: [`
-    .admin-page-container { max-width: 1200px; margin: 0 auto; }
-    
-    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
-    .page-title { font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 8px 0; }
-    .page-subtitle { color: #6B7280; font-size: 0.95rem; margin: 0; }
+    /* Using Global Admin Theme */
+    /* Only list specific styles here */
 
-    .btn-primary { background: #D4AF37; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; gap: 8px; align-items: center; }
-    .btn-primary:hover { background: #B4941F; }
-    .btn-secondary { background: white; color: #374151; border: 1px solid #D1D5DB; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; }
-
-    .filters-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: white; padding: 12px; border-radius: 12px; border: 1px solid #E5E7EB; }
-    
-    .search-box { position: relative; width: 300px; }
-    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; }
-    .search-box input { width: 100%; padding: 10px 10px 10px 36px; border: 1px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
-    .search-box input:focus { outline: none; border-color: #D4AF37; }
-
-    /* List Styles */
     .sermons-list { display: flex; flex-direction: column; gap: 12px; }
     
     .sermon-row { 
-      background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 16px 24px;
+      background: white; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px 24px;
       display: flex; align-items: center; gap: 24px; transition: transform 0.2s, box-shadow 0.2s;
     }
     .sermon-row:hover { transform: translateX(4px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-color: #D4AF37; }
 
     .row-main { flex: 1; }
-    .sermon-title { font-size: 1.1rem; font-weight: 600; color: #111827; margin: 0 0 4px 0; }
-    .sermon-meta { display: flex; gap: 16px; font-size: 0.85rem; color: #6B7280; }
-    .meta-item i { margin-right: 6px; color: #9CA3AF; }
+    .sermon-title { font-size: 1.1rem; font-weight: 600; color: #0F172A; margin: 0 0 4px 0; }
+    .sermon-meta { display: flex; gap: 16px; font-size: 0.85rem; color: #64748B; }
+    .meta-item i { margin-right: 6px; color: #94A3B8; }
 
     .row-media { display: flex; gap: 8px; }
     .media-badge { 
-      width: 32px; height: 32px; border-radius: 50%; background: #F3F4F6; color: #9CA3AF;
+      width: 32px; height: 32px; border-radius: 50%; background: #F3F4F6; color: #94A3B8;
       display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
     }
     .media-badge.video { background: #EEF2FF; color: #4F46E5; }
@@ -129,12 +114,6 @@ import { SermonFormComponent } from './form/sermon-form.component';
     .media-badge.notes { background: #FFF7ED; color: #EA580C; }
 
     .row-actions { display: flex; gap: 8px; }
-    .btn-icon { background: none; border: none; width: 32px; height: 32px; border-radius: 6px; color: #6B7280; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-    .btn-icon:hover { background: #F3F4F6; color: #111827; }
-    .btn-icon.delete:hover { background: #FEF2F2; color: #DC2626; }
-
-    .empty-state { text-align: center; padding: 64px; background: white; border-radius: 12px; border: 1px dashed #E5E7EB; }
-    .empty-icon { font-size: 3rem; color: #D1D5DB; margin-bottom: 16px; }
   `]
 })
 export class SermonsAdminComponent implements OnInit {

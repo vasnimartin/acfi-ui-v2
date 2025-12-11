@@ -11,32 +11,32 @@ import { EventFormComponent } from '../form/event-form.component';
   template: `
     <div class="admin-page-container">
       <!-- Page Header -->
-      <div class="page-header">
-        <div class="header-content">
-          <h1 class="page-title">Events Manager</h1>
-          <p class="page-subtitle">Manage upcoming services, gatherings, and special events.</p>
+      <div class="admin-header">
+        <div class="admin-title-group">
+          <h1 class="admin-page-title">Events Manager</h1>
+          <p class="admin-page-subtitle">Manage upcoming services, gatherings, and special events.</p>
         </div>
-        <button class="btn-primary" (click)="openAddModal()">
+        <button class="btn-admin-primary" (click)="openAddModal()">
           <i class="fa-solid fa-plus"></i> Add Event
         </button>
       </div>
 
       <!-- Filters & Search -->
-      <div class="filters-bar">
+      <div class="admin-toolbar">
         <div class="tabs">
           <button class="tab-btn" [class.active]="activeTab === 'upcoming'" (click)="setTab('upcoming')">Upcoming</button>
           <button class="tab-btn" [class.active]="activeTab === 'past'" (click)="setTab('past')">Past History</button>
           <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="setTab('all')">All Events</button>
         </div>
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <div class="admin-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder="Search events..." [(ngModel)]="searchQuery" (ngModelChange)="filterEvents()">
         </div>
       </div>
 
       <!-- Events List (Card Grid) -->
-      <div class="events-grid" *ngIf="filteredEvents.length > 0; else emptyState">
-        <div class="event-card" *ngFor="let event of filteredEvents">
+      <div class="admin-grid" *ngIf="filteredEvents.length > 0; else emptyState">
+        <div class="admin-card" style="padding: 0; display: flex; overflow: hidden;" *ngFor="let event of filteredEvents">
           <div class="card-status-strip" [class]="event.event_type"></div>
           <div class="card-content">
             <div class="event-meta">
@@ -65,13 +65,11 @@ import { EventFormComponent } from '../form/event-form.component';
 
       <!-- Empty State -->
       <ng-template #emptyState>
-        <div class="empty-state">
-          <div class="empty-icon">
-            <i class="fa-regular fa-calendar-xmark"></i>
-          </div>
+        <div class="admin-empty-state">
+          <i class="fa-regular fa-calendar-xmark"></i>
           <h3>No events found</h3>
           <p>Try adjusting your search or filters, or create a new event.</p>
-          <button class="btn-secondary" (click)="openAddModal()" *ngIf="events.length > 0">Add Event</button>
+          <button class="btn-admin-secondary" (click)="openAddModal()" *ngIf="events.length > 0">Add Event</button>
         </div>
       </ng-template>
 
@@ -86,149 +84,9 @@ import { EventFormComponent } from '../form/event-form.component';
     </div>
   `,
   styles: [`
-    .admin-page-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Header */
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 32px;
-    }
-
-    .page-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #111827;
-      margin: 0 0 8px 0;
-    }
-
-    .page-subtitle {
-      color: #6B7280;
-      font-size: 0.95rem;
-      margin: 0;
-    }
-
-    .btn-primary {
-      background: #D4AF37; /* Mute Gold */
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      transition: background 0.2s;
-    }
-
-    .btn-primary:hover {
-      background: #B4941F;
-    }
+    /* Using Global Admin Theme - No local overrides needed for layout */
+    /* Add only specific tweaks here if necessary */
     
-    .btn-secondary {
-      background: white;
-      color: #374151;
-      border: 1px solid #D1D5DB;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    /* Filters Bar */
-    .filters-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      background: white;
-      padding: 8px;
-      border-radius: 12px;
-      border: 1px solid #E5E7EB;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 4px;
-    }
-
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      color: #6B7280;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .tab-btn:hover {
-      background: #F3F4F6;
-      color: #374151;
-    }
-
-    .tab-btn.active {
-      background: #FEFCE8;
-      color: #D97706;
-      font-weight: 600;
-    }
-
-    .search-box {
-      position: relative;
-      width: 300px;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #9CA3AF;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 10px 10px 10px 36px;
-      border: 1px solid #E5E7EB;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.9rem;
-    }
-    
-    .search-box input:focus {
-      outline: none;
-      border-color: #D4AF37;
-      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
-    }
-
-    /* Grid Layout */
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 24px;
-    }
-
-    .event-card {
-      background: white;
-      border: 1px solid #E5E7EB;
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .event-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
-    }
-
     .card-status-strip {
       width: 6px;
       /* Default strip color */
@@ -303,56 +161,12 @@ import { EventFormComponent } from '../form/event-form.component';
       padding-top: 16px;
       border-top: 1px solid #F3F4F6;
     }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      font-size: 0.9rem;
-      color: #6B7280;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-
-    .btn-icon:hover {
-      background: #F3F4F6;
-      color: #111827;
-    }
-
-    .btn-icon.delete:hover {
-      background: #FEF2F2;
-      color: #DC2626;
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 64px 20px;
-      background: white;
-      border-radius: 12px;
-      border: 1px dashed #E5E7EB;
-    }
-
-    .empty-icon {
-      font-size: 3rem;
-      color: #D1D5DB;
-      margin-bottom: 16px;
-    }
-
-    .empty-state h3 {
-      font-size: 1.1rem;
-      color: #374151;
-      margin: 0 0 8px 0;
-    }
-
-    .empty-state p {
-      color: #6B7280;
-      margin-bottom: 24px;
-    }
+    
+    /* Tabs specific to this page */
+    .tabs { display: flex; gap: 4px; }
+    .tab-btn { background: none; border: none; padding: 8px 16px; border-radius: 8px; color: #64748B; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .tab-btn:hover { background: #F1F5F9; color: #1E293B; }
+    .tab-btn.active { background: #FEFCE8; color: #D4AF37; }
   `]
 })
 export class EventsAdminComponent implements OnInit {

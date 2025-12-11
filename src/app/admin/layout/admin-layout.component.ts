@@ -9,32 +9,61 @@ import { AdminTopbarComponent } from './topbar/admin-topbar.component';
   standalone: true,
   imports: [CommonModule, RouterModule, AdminSidebarComponent, AdminTopbarComponent],
   template: `
-    <div class="admin-shell">
-      <app-admin-sidebar></app-admin-sidebar>
-      <app-admin-topbar></app-admin-topbar>
+    <div class="admin-wrapper">
+      <div class="admin-sidebar-col">
+          <app-admin-sidebar></app-admin-sidebar>
+      </div>
       
-      <main class="admin-content">
-        <router-outlet></router-outlet>
-      </main>
+      <div class="admin-main-col">
+          <app-admin-topbar></app-admin-topbar>
+          
+          <main class="admin-content-area">
+            <router-outlet></router-outlet>
+          </main>
+      </div>
     </div>
   `,
   styles: [`
-    .admin-shell {
-      min-height: 100vh;
-      background-color: #F9FAFB; /* Soft gray premium background */
+    .admin-wrapper {
+      display: flex;
+      min-height: calc(100vh - 160px); /* Approx header+footer height offset */
+      background-color: #F9FAFB;
+      position: relative;
     }
 
-    .admin-content {
-      margin-left: 280px; /* Match sidebar width */
-      padding-top: 64px; /* Match topbar height */
-      padding: 96px 32px 32px 32px; /* Top padding = 64px + 32px spacing */
-      min-height: 100vh;
+    .admin-sidebar-col {
+      width: 280px;
+      flex-shrink: 0;
+      background: #0F172A;
+      /* Sticky sidebar logic */
+      position: sticky;
+      top: 0; 
+      height: 100vh; /* Or however tall it needs to be */
+      max-height: 100vh;
+      overflow-y: auto;
     }
 
-    @media (max-width: 768px) {
-      .admin-content {
-        margin-left: 0;
-        padding: 80px 16px 16px 16px;
+    .admin-main-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0; /* Prevent overflow */
+    }
+
+    .admin-content-area {
+      padding: 32px;
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      .admin-wrapper {
+        flex-direction: column;
+      }
+      .admin-sidebar-col {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
       }
     }
   `]

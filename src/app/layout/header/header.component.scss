@@ -41,3 +41,27 @@
     align-items: center;
     height: 100%;
 }
+
+.user-id {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-align: right;
+}
+
+.role-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #DAA520; /* Gold */
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.role-link-item a {
+    color: #DAA520 !important;
+    font-weight: 600 !important;
+}
+
+.role-link-item i {
+    margin-right: 6px;
+}

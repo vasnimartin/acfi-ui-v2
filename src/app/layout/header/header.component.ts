@@ -57,12 +57,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  isLoggingOut = false; // New state
+
   login() {
     this.authService.signInWithGoogle();
   }
 
-  logout() {
-    this.authService.signOut();
+  async logout() {
+    if (this.isLoggingOut) return;
+    this.isLoggingOut = true;
+    try {
+        await this.authService.signOut();
+    } finally {
+        this.isLoggingOut = false;
+    }
   }
 
   toggleMenu() {
@@ -96,6 +104,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'media': return 'Media Suite';
       default: return 'Member Dashboard';
     }
+  }
+
+  getEmailPrefix(user: any): string {
+    return user?.email?.split('@')[0] || '';
   }
 
   closeMenu() {

@@ -8,8 +8,8 @@ import { SermonsAdminComponent } from './sermons/sermons-admin.component';
 import { RolesAdminComponent } from './people/people-admin.component';
 
 // Placeholder components for now
-@Component({ template: '<h2>Manage Ministries</h2><p>Coming soon...</p>', standalone: true }) class MinistriesAdminComponent {}
-@Component({ template: '<h2>Manage Timeline</h2><p>Coming soon...</p>', standalone: true }) class TimelineAdminComponent {}
+@Component({ selector: 'admin-ministries', template: '<h2>Manage Ministries</h2><p>Coming soon...</p>', standalone: true }) class MinistriesAdminComponent {}
+@Component({ selector: 'admin-timeline', template: '<h2>Manage Timeline</h2><p>Coming soon...</p>', standalone: true }) class TimelineAdminComponent {}
 
 export const ADMIN_ROUTES: Routes = [
   {
