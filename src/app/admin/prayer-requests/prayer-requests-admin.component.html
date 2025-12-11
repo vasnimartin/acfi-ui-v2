@@ -1,0 +1,79 @@
+<div class="admin-page">
+  <div class="page-header">
+    <h1><i class="fa-solid fa-hands-praying"></i> Prayer Requests</h1>
+    <p class="subtitle">Manage and pray for submitted requests</p>
+  </div>
+
+  <div class="filters-section">
+    <div class="filter-group">
+      <label for="statusFilter">Filter by Status:</label>
+      <select id="statusFilter" [(ngModel)]="filterStatus" (change)="onFilterChange()" class="form-select">
+        <option value="all">All Requests</option>
+        <option value="pending">Pending</option>
+        <option value="prayed">Prayed</option>
+        <option value="archived">Archived</option>
+      </select>
+    </div>
+
+    <div class="search-group">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Search requests..."
+        class="search-input" />
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <i class="fa-solid fa-spinner fa-spin"></i> Loading prayer requests...
+  </div>
+
+  <div *ngIf="!loading && filteredRequests.length === 0" class="empty-state">
+    <i class="fa-solid fa-inbox"></i>
+    <p>No prayer requests found</p>
+  </div>
+
+  <div *ngIf="!loading && filteredRequests.length > 0" class="requests-grid">
+    <div *ngFor="let request of filteredRequests" class="request-card" [class.private]="request.is_private">
+      <div class="card-header">
+        <div class="request-meta">
+          <span class="badge" [ngClass]="getStatusBadgeClass(request.status)">
+            {{ request.status || 'pending' }}
+          </span>
+          <span *ngIf="request.is_private" class="private-badge">
+            <i class="fa-solid fa-lock"></i> Private
+          </span>
+        </div>
+        <div class="card-actions">
+          <button *ngIf="request.status !== 'prayed'" (click)="updateStatus(request, 'prayed')" class="btn-icon"
+            title="Mark as Prayed">
+            <i class="fa-solid fa-check"></i>
+          </button>
+          <button *ngIf="request.status !== 'archived'" (click)="updateStatus(request, 'archived')" class="btn-icon"
+            title="Archive">
+            <i class="fa-solid fa-archive"></i>
+          </button>
+          <button (click)="deleteRequest(request)" class="btn-icon btn-danger" title="Delete">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <p class="request-text">{{ request.request_text }}</p>
+      </div>
+
+      <div class="card-footer">
+        <div class="submitter-info">
+          <i class="fa-solid fa-user"></i>
+          <span *ngIf="request.submitter_name">{{ request.submitter_name }}</span>
+          <span *ngIf="!request.submitter_name && request.user_id">Member (ID: {{ request.user_id.substring(0, 8)
+            }}...)</span>
+          <span *ngIf="!request.submitter_name && !request.user_id">Anonymous</span>
+        </div>
+        <div class="request-date">
+          <i class="fa-solid fa-calendar"></i>
+          {{ formatDate(request.created_at) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -48,3 +48,61 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- Create prayer_requests table
+create table if not exists public.prayer_requests (
+  id serial primary key,
+  user_id uuid references auth.users,
+  request_text text not null,
+  is_private boolean default false,
+  status text default 'pending' check (status in ('pending', 'prayed', 'archived')),
+  submitter_name text,
+  submitter_email text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable RLS on prayer_requests
+alter table public.prayer_requests enable row level security;
+
+-- Anyone can insert prayer requests (public form)
+create policy "Anyone can submit prayer requests"
+  on prayer_requests for insert
+  with check ( true );
+
+-- Users can view their own requests
+create policy "Users can view own requests"
+  on prayer_requests for select
+  using ( auth.uid() = user_id );
+
+-- Admins can view all requests
+create policy "Admins can view all requests"
+  on prayer_requests for select
+  using ( 
+    exists (
+      select 1 from public.profiles
+      where profiles.id = auth.uid()
+      and profiles.role in ('admin', 'pastor')
+    )
+  );
+
+-- Admins can update requests (status changes)
+create policy "Admins can update requests"
+  on prayer_requests for update
+  using ( 
+    exists (
+      select 1 from public.profiles
+      where profiles.id = auth.uid()
+      and profiles.role in ('admin', 'pastor')
+    )
+  );
+
+-- Admins can delete requests
+create policy "Admins can delete requests"
+  on prayer_requests for delete
+  using ( 
+    exists (
+      select 1 from public.profiles
+      where profiles.id = auth.uid()
+      and profiles.role in ('admin', 'pastor')
+    )
+  );

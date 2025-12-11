@@ -6,6 +6,7 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard.component';
 import { MediaAdminComponent } from './media/media-admin.component';
 import { SermonsAdminComponent } from './sermons/sermons-admin.component';
 import { RolesAdminComponent } from './people/people-admin.component';
+import { PrayerRequestsAdminComponent } from './prayer-requests/prayer-requests-admin.component';
 
 // Placeholder components for now
 @Component({ selector: 'admin-ministries', template: '<h2>Manage Ministries</h2><p>Coming soon...</p>', standalone: true }) class MinistriesAdminComponent {}
@@ -23,7 +24,8 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'sermons', component: SermonsAdminComponent },
       { path: 'timeline', component: TimelineAdminComponent },
       { path: 'media', component: MediaAdminComponent },
-      { path: 'people', component: RolesAdminComponent }
+      { path: 'people', component: RolesAdminComponent },
+      { path: 'prayer-requests', component: PrayerRequestsAdminComponent }
     ]
   }
 ];
