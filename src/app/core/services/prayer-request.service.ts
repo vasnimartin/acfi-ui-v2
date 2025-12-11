@@ -53,17 +53,12 @@ export class PrayerRequestService {
     return from(
       this.supabase
         .from('prayer_requests')
-        .select('*, profiles(full_name, email)')
+        .select('*')
         .order('created_at', { ascending: false })
     ).pipe(
       map(({ data, error }) => {
         if (error) throw error;
-        // Transform the data to include profile info
-        return (data as any[]).map(item => ({
-          ...item,
-          user_full_name: item.profiles?.full_name,
-          user_email: item.profiles?.email
-        })) as PrayerRequest[];
+        return data as PrayerRequest[];
       })
     );
   }
