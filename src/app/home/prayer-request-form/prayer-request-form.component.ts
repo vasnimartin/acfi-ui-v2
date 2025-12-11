@@ -20,6 +20,7 @@ export class PrayerRequestFormComponent {
   submitting = false;
   isLoggedIn = false;
   userId: string | null = null;
+  userFullName: string | null = null;
 
   constructor(
     private prayerRequestService: PrayerRequestService,
@@ -29,6 +30,10 @@ export class PrayerRequestFormComponent {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
       this.userId = user?.id || null;
+    });
+
+    this.authService.currentUserProfile$.subscribe(profile => {
+      this.userFullName = profile?.full_name || null;
     });
   }
 
@@ -50,7 +55,7 @@ export class PrayerRequestFormComponent {
       request_text: this.requestText,
       is_private: this.isPrivate,
       user_id: this.userId || undefined,
-      submitter_name: !this.isLoggedIn ? this.submitterName : undefined,
+      submitter_name: this.isLoggedIn ? this.userFullName : this.submitterName,
       submitter_email: !this.isLoggedIn ? this.submitterEmail : undefined
     };
 
