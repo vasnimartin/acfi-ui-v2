@@ -58,6 +58,10 @@ import { Observable, map } from 'rxjs';
               <span class="nav-icon"><i class="fa-solid fa-users-rays"></i></span>
               <span class="nav-label">Ministries</span>
             </a>
+            <a routerLink="/admin/prayer-requests" routerLinkActive="active" class="nav-item">
+              <span class="nav-icon"><i class="fa-solid fa-hands-praying"></i></span>
+              <span class="nav-label">Prayer Requests</span>
+            </a>
           </div>
 
           <!-- Section: Content -->

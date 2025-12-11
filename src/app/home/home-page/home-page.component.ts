@@ -7,6 +7,7 @@ import { TenetsComponent } from '../tenets/tenets.component';
 import { CtaComponent } from '../cta/cta.component';
 import { TestimonialsComponent } from '../testimonials/testimonials.component';
 import { GalleryComponent } from '../gallery/gallery.component';
+import { PrayerRequestFormComponent } from '../prayer-request-form/prayer-request-form.component';
 
 @Component({
   selector: 'app-home-page',
@@ -19,7 +20,8 @@ import { GalleryComponent } from '../gallery/gallery.component';
     TenetsComponent,
     CtaComponent,
     TestimonialsComponent,
-    GalleryComponent
+    GalleryComponent,
+    PrayerRequestFormComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']

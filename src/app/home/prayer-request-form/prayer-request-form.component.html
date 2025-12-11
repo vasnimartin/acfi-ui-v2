@@ -1,0 +1,69 @@
+<div class="prayer-request-section">
+  <div class="container">
+    <div class="content-wrapper">
+      <div class="form-section">
+        <h2>Prayer Requests</h2>
+        <p class="subtitle">
+          "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present
+          your requests to God." - Philippians 4:6
+        </p>
+
+        <form (ngSubmit)="submitRequest()" #prayerForm="ngForm" class="prayer-form">
+          <!-- Show name/email fields only if not logged in -->
+          <div *ngIf="!isLoggedIn" class="guest-fields">
+            <div class="form-group">
+              <label for="name">Your Name <span class="required">*</span></label>
+              <input type="text" id="name" [(ngModel)]="submitterName" name="name" class="form-control"
+                placeholder="Enter your name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email (Optional)</label>
+              <input type="email" id="email" [(ngModel)]="submitterEmail" name="email" class="form-control"
+                placeholder="your@email.com" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="request">How can we pray for you? <span class="required">*</span></label>
+            <textarea id="request" [(ngModel)]="requestText" name="request" rows="6" class="form-control"
+              placeholder="Share your prayer request here..." required></textarea>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="private" [(ngModel)]="isPrivate" name="private">
+            <label for="private">
+              Keep this private (Pastors only)
+              <small>Unchecked requests may be shared with the prayer team.</small>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" [disabled]="!requestText || submitting">
+              <i class="fa-solid fa-paper-plane"></i>
+              {{ submitting ? 'Sending...' : 'Send Request' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="info-section">
+        <div class="info-card">
+          <h3><i class="fa-solid fa-hands-praying"></i> We Pray Together</h3>
+          <p>Our prayer team meets every Wednesday at 7 PM. Your requests are lifted up in community and
+            confidentiality.</p>
+        </div>
+
+        <div class="info-card">
+          <h3><i class="fa-solid fa-phone"></i> Urgent Need?</h3>
+          <p>If you have an emergency, please contact the pastoral care line directly at (512) 555-0199.</p>
+        </div>
+
+        <div class="info-card">
+          <h3><i class="fa-solid fa-lock"></i> Your Privacy</h3>
+          <p>All prayer requests are treated with confidentiality. Private requests are only visible to pastors.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
