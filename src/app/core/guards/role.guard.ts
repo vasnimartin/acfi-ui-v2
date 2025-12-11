@@ -1,31 +1,37 @@
 import { inject } from '@angular/core';
 import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { map, filter, take, tap } from 'rxjs/operators';
+import { map, filter, take, tap, switchMap } from 'rxjs/operators';
 
 export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const requiredRoles = route.data['roles'] as Array<string>;
 
-  // Wait for the role to be loaded (not undefined)
-  return authService.currentUserRole$.pipe(
-    // You might want to filter out the initial null if you are strict, 
-    // but here we just check if value is available or wait for auth.
-    // However, since behavior subject has initial value, we rely on auth flow.
-    // For simplicity, we just take the current value effectively.
-    // Note: In a real app, you might need to wait for an 'authInitialized' signal.
-    // Here we leverage the fact that loadUserRole is called early. 
-    // A more robust way is to filter(role => role !== undefined) if we had a loading state.
-    take(1), 
+  // Combine the loading state with the role
+  // We want to wait until not loading, then check role
+  /* 
+     New Logic:
+     1. SwitchMap to authLoading$.
+     2. If loading is true, we act as 'waiting' (can't easily block routing synchronously without a promise or observable completion).
+     3. Actually, we take Role and Loading. We assume guard waits for Observable completion or emission.
+  */
+  
+  // Clean implementation:
+  return authService.authLoading$.pipe(
+    filter(loading => loading === false), // Wait until loading is false
+    take(1), // Take the first 'false' emission (done loading)
+    switchMap(() => authService.currentUserRole$), // Switch to role stream
+    take(1), // Take current role
     map(role => {
       const user = authService.currentUserValue;
-      
+
       if (!user) {
-        // Not logged in
-        return router.createUrlTree(['/']); // Redirect to home or login popup
+        // Not logged in -> Redirect
+        return router.createUrlTree(['/']); 
       }
 
+      // User logged in, check role
       const hasRole = requiredRoles ? requiredRoles.includes(role || '') : true;
 
       if (hasRole) {
@@ -33,7 +39,7 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
       }
 
       // Logged in but no permission
-      // alert('You do not have permission to access this page'); 
+      // alert('You do not have permission to access.'); 
       return router.createUrlTree(['/']);
     })
   );

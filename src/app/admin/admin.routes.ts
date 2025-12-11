@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './layout/admin-layout.component';
 import { Component } from '@angular/core';
+import { EventsAdminComponent } from './events/list/events-list.component';
 
 // Placeholder components for now
-@Component({ template: '<h2>Manage Events</h2><p>Coming soon...</p>', standalone: true }) class EventsAdminComponent {}
 @Component({ template: '<h2>Manage Ministries</h2><p>Coming soon...</p>', standalone: true }) class MinistriesAdminComponent {}
 @Component({ template: '<h2>Manage Sermons</h2><p>Coming soon...</p>', standalone: true }) class SermonsAdminComponent {}
 @Component({ template: '<h2>Manage Timeline</h2><p>Coming soon...</p>', standalone: true }) class TimelineAdminComponent {}

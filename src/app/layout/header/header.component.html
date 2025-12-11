@@ -111,7 +111,9 @@
                             {{ currentUser.email }} <i class="fa-solid fa-chevron-down"></i>
                         </a>
                         <ul class="dropdown">
-                            <li *ngIf="currentUserRole && ['admin', 'pastor', 'media'].includes(currentUserRole)">
+                            <li><a routerLink="/dashboard" (click)="closeMenu()">My Dashboard</a></li>
+                            <li
+                                *ngIf="!isLoading && currentUserRole && ['admin', 'pastor', 'media'].includes(currentUserRole)">
                                 <a routerLink="/admin" (click)="closeMenu()">Admin</a>
                             </li>
                             <li><a (click)="logout(); closeMenu()" style="cursor: pointer;">Logout</a></li>

@@ -19,8 +19,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
   currentUser: User | null = null;
   currentUserRole: string | null = null;
+  isLoading = true; // Add loading state
   private authSubscription: Subscription | null = null;
   private roleSubscription: Subscription | null = null;
+  private loadingSubscription: Subscription | null = null; // New subscription
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -37,6 +39,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.roleSubscription = this.authService.currentUserRole$.subscribe(role => {
       this.currentUserRole = role;
     });
+    // Subscribe to loading state
+    this.loadingSubscription = this.authService.authLoading$.subscribe(loading => {
+        this.isLoading = loading;
+    });
   }
 
   ngOnDestroy() {
@@ -45,6 +51,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     if (this.roleSubscription) {
       this.roleSubscription.unsubscribe();
+    }
+    if (this.loadingSubscription) {
+        this.loadingSubscription.unsubscribe();
     }
   }
 
