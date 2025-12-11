@@ -65,9 +65,9 @@
         <div class="submitter-info">
           <i class="fa-solid fa-user"></i>
           <span *ngIf="request.submitter_name">{{ request.submitter_name }}</span>
-          <span *ngIf="!request.submitter_name && request.user_id">Member (ID: {{ request.user_id.substring(0, 8)
-            }}...)</span>
-          <span *ngIf="!request.submitter_name && !request.user_id">Anonymous</span>
+          <span *ngIf="!request.submitter_name && request.user_full_name">{{ request.user_full_name }}</span>
+          <span *ngIf="!request.submitter_name && !request.user_full_name && request.user_id">Member</span>
+          <span *ngIf="!request.submitter_name && !request.user_full_name && !request.user_id">Anonymous</span>
         </div>
         <div class="request-date">
           <i class="fa-solid fa-calendar"></i>
