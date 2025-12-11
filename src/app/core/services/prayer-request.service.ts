@@ -12,6 +12,8 @@ export interface PrayerRequest {
   submitter_name?: string;
   submitter_email?: string;
   created_at?: string;
+  user_full_name?: string; // From profiles join
+  user_email?: string; // From profiles join
 }
 
 @Injectable({
@@ -51,12 +53,23 @@ export class PrayerRequestService {
     return from(
       this.supabase
         .from('prayer_requests')
-        .select('*')
+        .select(`
+          *,
+          profiles:user_id (
+            full_name,
+            email
+          )
+        `)
         .order('created_at', { ascending: false })
     ).pipe(
       map(({ data, error }) => {
         if (error) throw error;
-        return data as PrayerRequest[];
+        // Transform the data to include profile info
+        return (data as any[]).map(item => ({
+          ...item,
+          user_full_name: item.profiles?.full_name,
+          user_email: item.profiles?.email
+        })) as PrayerRequest[];
       })
     );
   }
