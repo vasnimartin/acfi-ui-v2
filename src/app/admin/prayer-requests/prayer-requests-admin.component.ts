@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PrayerRequestService, PrayerRequest } from '../../core/services/prayer-request.service';
 import { ToastService } from '../../core/services/toast.service';
+import { SupabaseService } from '../../core/services/supabase.service';
 
 @Component({
   selector: 'app-prayer-requests-admin',
@@ -20,7 +21,8 @@ export class PrayerRequestsAdminComponent implements OnInit {
 
   constructor(
     private prayerRequestService: PrayerRequestService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private supabaseService: SupabaseService
   ) {}
 
   ngOnInit() {
@@ -30,8 +32,34 @@ export class PrayerRequestsAdminComponent implements OnInit {
   loadPrayerRequests() {
     this.loading = true;
     this.prayerRequestService.getAllPrayerRequests().subscribe({
-      next: (requests) => {
-        this.prayerRequests = requests;
+      next: async (requests) => {
+        // Fetch profiles for requests with user_id
+        const userIds = requests
+          .filter(r => r.user_id)
+          .map(r => r.user_id as string);
+
+        if (userIds.length > 0) {
+          const { data: profiles } = await this.supabaseService.client
+            .from('profiles')
+            .select('id, full_name, email')
+            .in('id', userIds);
+
+          // Merge profile data into requests
+          this.prayerRequests = requests.map(request => {
+            if (request.user_id && profiles) {
+              const profile = profiles.find((p: any) => p.id === request.user_id);
+              return {
+                ...request,
+                user_full_name: profile?.full_name,
+                user_email: profile?.email
+              };
+            }
+            return request;
+          });
+        } else {
+          this.prayerRequests = requests;
+        }
+
         this.applyFilters();
         this.loading = false;
       },
