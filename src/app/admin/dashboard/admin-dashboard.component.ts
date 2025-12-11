@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { EventService } from '../../core/services/event.service';
+import { SermonService } from '../../core/services/sermon.service';
+import { MediaService } from '../../core/services/media.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -24,43 +27,50 @@ import { Observable } from 'rxjs';
         <div class="stat-card">
           <div class="stat-icon events"><i class="fa-regular fa-calendar"></i></div>
           <div class="stat-content">
-            <span class="stat-value">3</span>
-            <span class="stat-label">Upcoming Events</span>
+            <span class="stat-value">{{ stats.events }}</span>
+            <span class="stat-label">Total Events</span>
           </div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-icon people"><i class="fa-solid fa-users"></i></div>
+          <div class="stat-icon people"><i class="fa-solid fa-cloud"></i></div>
           <div class="stat-content">
-            <span class="stat-value">12</span>
-            <span class="stat-label">New Members</span>
+            <span class="stat-value">{{ stats.media }}</span>
+            <span class="stat-label">Media Files</span>
           </div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-icon prayer"><i class="fa-solid fa-hands-praying"></i></div>
+          <div class="stat-icon prayer"><i class="fa-solid fa-microphone"></i></div>
           <div class="stat-content">
-            <span class="stat-value">5</span>
-            <span class="stat-label">Prayer Requests</span>
+            <span class="stat-value">{{ stats.sermons }}</span>
+            <span class="stat-label">Sermons Archived</span>
           </div>
         </div>
       </div>
 
       <h3 class="section-title">Quick Actions</h3>
       <div class="actions-grid">
-        <a routerLink="../events" class="action-card">
+        <!-- Add Event: Admin Only -->
+        <a routerLink="../events" class="action-card" *ngIf="hasRole('admin')">
           <span class="action-icon"><i class="fa-solid fa-plus"></i></span>
           <span class="action-text">Add Event</span>
         </a>
-        <a routerLink="../sermons" class="action-card">
+        
+        <!-- Upload Sermon: Admin, Pastor, Media -->
+        <a routerLink="../sermons" class="action-card" *ngIf="hasRole(['admin', 'pastor', 'media'])">
           <span class="action-icon"><i class="fa-solid fa-microphone"></i></span>
           <span class="action-text">Upload Sermon</span>
         </a>
-        <a routerLink="../media" class="action-card">
+        
+        <!-- Upload Media: Admin & Media -->
+        <a routerLink="../media" class="action-card" *ngIf="hasRole(['admin', 'media'])">
           <span class="action-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
           <span class="action-text">Upload Media</span>
         </a>
-        <a routerLink="../ministries" class="action-card">
+        
+        <!-- Manage Rosters: Admin Only (for now, maybe Pastor laters) -->
+        <a routerLink="../ministries" class="action-card" *ngIf="hasRole(['admin', 'pastor'])">
           <span class="action-icon"><i class="fa-solid fa-clipboard-list"></i></span>
           <span class="action-text">Manage Rosters</span>
         </a>
@@ -204,10 +214,46 @@ import { Observable } from 'rxjs';
 export class AdminDashboardComponent implements OnInit {
   userProfile$: Observable<any> | undefined;
   today = new Date();
+  
+  stats = {
+    events: 0,
+    media: 0, // treating 'New Members' as media count for now as we don't have member count API
+    sermons: 0 // treating 'Prayer Requests' as sermons count for now
+  };
 
-  constructor(private authService: AuthService) {}
+  currentUserRole: string | null = null;
+  // ...
+
+  constructor(
+    private authService: AuthService,
+    private eventService: EventService, 
+    private sermonService: SermonService,
+    private mediaService: MediaService
+  ) {}
 
   ngOnInit() {
     this.userProfile$ = this.authService.currentUserProfile$;
+    
+    // Subscribe to Role
+    this.authService.currentUserRole$.subscribe(role => {
+        this.currentUserRole = role;
+    });
+
+    this.loadStats();
+  }
+
+  hasRole(allowed: string | string[]): boolean {
+      if (!this.currentUserRole) return false;
+      if (Array.isArray(allowed)) {
+          return allowed.includes(this.currentUserRole);
+      }
+      return this.currentUserRole === allowed;
+  }
+
+  loadStats() {
+    // Parallel load
+    this.eventService.getEvents().subscribe(events => this.stats.events = events.length);
+    this.sermonService.getSermons().subscribe(sermons => this.stats.sermons = sermons.length);
+    this.mediaService.getMedia().subscribe(media => this.stats.media = media.length);
   }
 }

@@ -89,6 +89,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
   
+  getRoleLabel(): string {
+    switch (this.currentUserRole) {
+      case 'admin': return 'Global Admin';
+      case 'pastor': return 'Pastor Portal';
+      case 'media': return 'Media Suite';
+      default: return 'Member Dashboard';
+    }
+  }
+
   closeMenu() {
     this.menuOpen = false;
     this.activeDropdown = null;

@@ -4,251 +4,408 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService, UserProfile } from '../core/services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   template: `
-    <div class="dashboard-container">
-      <div class="container">
-        <h1>Member Dashboard</h1>
-        
+    <div class="dashboard-wrapper">
+      <div class="dashboard-header-bg">
+        <div class="overlay"></div>
+        <div class="container header-content">
+           <span class="user-greeting" *ngIf="userProfile$ | async as profile">
+             Hello, {{ (profile?.full_name || 'Member').split(' ')[0] }}
+           </span>
+           <h1 class="page-title">My Dashboard</h1>
+           <p class="page-subtitle">Manage your profile, prayer requests, and ministry involvement.</p>
+        </div>
+      </div>
+
+      <div class="container main-content">
         <div class="dashboard-grid">
-          <!-- Profile Section -->
-          <div class="dashboard-card profile-card">
-            <h2>My Profile</h2>
-            <p class="subtitle">Keep your contact information up to date.</p>
+          
+          <!-- Left Column: Quick Actions & Navigation -->
+          <div class="grid-column left">
             
-            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-form">
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" [value]="currentUserEmail" disabled class="form-control" />
-                <small>Email cannot be changed manually.</small>
+            <!-- Staff Shortcut Card -->
+            <div class="feature-card staff-highlight" *ngIf="isStaff">
+              <div class="card-icon-wrapper gold">
+                <i class="fa-solid fa-user-shield"></i>
               </div>
-
-              <div class="form-group">
-                <label for="full_name">Full Name</label>
-                <input type="text" id="full_name" formControlName="full_name" class="form-control" placeholder="John Doe" />
+              <div class="card-text">
+                <h3>Admin Portal</h3>
+                <p>Access church management resources.</p>
               </div>
-
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" formControlName="phone" class="form-control" placeholder="(555) 123-4567" />
-              </div>
-
-              <div class="form-group">
-                <label for="address">Mailing Address</label>
-                <textarea id="address" formControlName="address" class="form-control" rows="3" placeholder="123 Church St, Austin, TX"></textarea>
-              </div>
-
-              <div class="form-actions">
-                <button type="submit" class="btn btn-primary" [disabled]="loading || profileForm.invalid">
-                  {{ loading ? 'Saving...' : 'Save Changes' }}
-                </button>
-                <p *ngIf="message" [class.success]="!error" [class.error]="error" class="status-message">
-                  {{ message }}
-                </p>
-              </div>
-            </form>
-          </div>
-
-          <!-- Feature Links -->
-          <div class="dashboard-card actions-card">
-            <h2>Get Involved</h2>
-            <div class="action-links">
-              <a routerLink="/volunteer" class="action-link">
-                <i class="fa-solid fa-clipboard-list"></i>
-                <div class="action-text">
-                  <h3>Volunteer Roster</h3>
-                  <span>Sign up for services</span>
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
-              </a>
-
-              <a routerLink="/prayer-requests" class="action-link">
-                <i class="fa-solid fa-hands-praying"></i>
-                <div class="action-text">
-                  <h3>Prayer Requests</h3>
-                  <span>Share your needs</span>
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
-              </a>
-
-              <a routerLink="/directory" class="action-link">
-                <i class="fa-solid fa-users"></i>
-                <div class="action-text">
-                  <h3>Member Directory</h3>
-                  <span>Connect with family</span>
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+              <a routerLink="/admin" class="btn-arrow">
+                <i class="fa-solid fa-arrow-right"></i>
               </a>
             </div>
+
+            <!-- Get Involved Section -->
+            <div class="section-label">Get Involved</div>
+            
+            <a routerLink="/volunteer" class="feature-card" *ngIf="isMemberOnly || isStaff">
+              <div class="card-icon-wrapper blue">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <div class="card-text">
+                <h3>Volunteer Roster</h3>
+                <p>Sign up for upcoming services.</p>
+              </div>
+              <i class="fa-solid fa-chevron-right card-arrow"></i>
+            </a>
+
+            <a routerLink="/prayer-requests" class="feature-card">
+              <div class="card-icon-wrapper orange">
+                <i class="fa-solid fa-hands-praying"></i>
+              </div>
+              <div class="card-text">
+                <h3>Prayer Requests</h3>
+                <p>Submit privacy-protected requests.</p>
+              </div>
+              <i class="fa-solid fa-chevron-right card-arrow"></i>
+            </a>
+
+            <a routerLink="/directory" class="feature-card">
+              <div class="card-icon-wrapper green">
+                <i class="fa-solid fa-address-book"></i>
+              </div>
+              <div class="card-text">
+                <h3>Member Directory</h3>
+                <p>Connect with our church family.</p>
+              </div>
+              <i class="fa-solid fa-chevron-right card-arrow"></i>
+            </a>
+
           </div>
+
+          <!-- Right Column: Profile Edit -->
+          <div class="grid-column right">
+            <div class="profile-panel">
+              <div class="panel-header">
+                <h2>My Profile</h2>
+                <button class="btn-save" (click)="saveProfile()" [disabled]="loading || profileForm.invalid">
+                   <i class="fa-solid fa-floppy-disk" *ngIf="!loading"></i>
+                   <i class="fa-solid fa-circle-notch fa-spin" *ngIf="loading"></i>
+                   {{ loading ? 'Saving...' : 'Save Changes' }}
+                </button>
+              </div>
+              
+              <form [formGroup]="profileForm" class="profile-form">
+                <!-- Status Message -->
+                <div class="status-banner" *ngIf="message" [class.error]="error" [class.success]="!error">
+                  <i class="fa-solid" [class.fa-circle-check]="!error" [class.fa-circle-exclamation]="error"></i>
+                  {{ message }}
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group full">
+                    <label>Email Address</label>
+                    <div class="input-wrapper disabled">
+                      <i class="fa-regular fa-envelope"></i>
+                      <input type="email" [value]="currentUserEmail" disabled />
+                    </div>
+                    <span class="help-text">Contact admin to change email.</span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group full">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                      <i class="fa-regular fa-user"></i>
+                      <input type="text" formControlName="full_name" placeholder="Your Name" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Phone</label>
+                    <div class="input-wrapper">
+                      <i class="fa-solid fa-phone"></i>
+                      <input type="tel" formControlName="phone" placeholder="(555) 000-0000" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Privacy</label>
+                    <div class="badge-display">Visible to Members</div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group full">
+                    <label>Mailing Address</label>
+                    <div class="input-wrapper textarea">
+                      <i class="fa-solid fa-house"></i>
+                      <textarea formControlName="address" rows="3" placeholder="123 Faith Lane..."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   `,
   styles: [`
-    .dashboard-container {
-      padding: 60px 0;
-      background-color: #f9f9f9;
-      min-height: 80vh;
+    .dashboard-wrapper {
+      min-height: 100vh;
+      background-color: #F3F4F6;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Header Hero */
+    .dashboard-header-bg {
+      background: #0F172A; /* Slate 900 */
+      color: white;
+      padding: 60px 0 100px 0; /* Extra bottom padding for overlap */
+      position: relative;
+      overflow: hidden;
     }
     
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15), transparent 40%);
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .user-greeting {
+      display: block;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #D4AF37; /* Gold */
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      color: #94A3B8;
+      font-size: 1.1rem;
+      margin: 0;
+      max-width: 600px;
+    }
+
+    /* Main Content Grid */
+    .main-content {
+      margin-top: -60px; /* Overlap header */
+      position: relative;
+      z-index: 10;
+      padding-bottom: 80px;
+    }
+
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 30px;
-      margin-top: 30px;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 32px;
     }
 
-    @media (max-width: 768px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 900px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
     }
 
-    .dashboard-card {
+    /* Cards */
+    .feature-card {
       background: white;
-      padding: 30px;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 16px;
+      text-decoration: none;
+      color: #1F2937;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .staff-highlight {
+      background: #1E293B; /* Dark slate */
+      color: white;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .staff-highlight:hover { border-color: #D4AF37; }
+    .staff-highlight .card-text p { color: #94A3B8; }
+
+    .card-icon-wrapper {
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      color: #333;
-      margin-bottom: 10px;
+    .card-icon-wrapper.gold { background: rgba(212, 175, 55, 0.2); color: #D4AF37; }
+    .card-icon-wrapper.blue { background: #EFF6FF; color: #3B82F6; }
+    .card-icon-wrapper.orange { background: #FFF7ED; color: #EA580C; }
+    .card-icon-wrapper.green { background: #ECFDF5; color: #10B981; }
+
+    .card-text h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+    }
+    
+    .card-text p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #6B7280;
     }
 
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-      color: #2c3e50;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 10px;
+    .card-arrow, .btn-arrow {
+      margin-left: auto;
+      color: #D1D5DB;
+    }
+    .staff-highlight .btn-arrow { color: #D4AF37; }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748B;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin: 24px 0 12px 12px;
     }
 
-    .subtitle {
-      color: #7f8c8d;
-      margin-bottom: 20px;
+    /* Profile Panel */
+    .profile-panel {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    .form-group {
-      margin-bottom: 20px;
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #F3F4F6;
     }
+
+    .panel-header h2 { margin: 0; font-size: 1.5rem; color: #1F2937; }
+
+    .btn-save {
+      background: #D4AF37;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .btn-save:hover { background: #B4941F; }
+    .btn-save:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    /* Form Styles */
+    .form-group { flex: 1; margin-bottom: 20px; }
+    .form-group.full { width: 100%; }
+    .form-row { display: flex; gap: 20px; }
 
     label {
       display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
       margin-bottom: 8px;
-      font-weight: 600;
-      color: #34495e;
     }
 
-    .form-control {
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9CA3AF;
+      font-size: 1rem;
+    }
+    
+    .input-wrapper.textarea i { top: 18px; transform: none; }
+
+    .input-wrapper input, .input-wrapper textarea {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      padding: 12px 12px 12px 42px;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
       font-size: 1rem;
-      transition: border-color 0.3s;
+      color: #1F2937;
+      transition: border-color 0.2s;
+      font-family: inherit;
     }
 
-    .form-control:focus {
-      border-color: #3498db;
+    .input-wrapper input:focus, .input-wrapper textarea:focus {
       outline: none;
+      border-color: #D4AF37;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
     }
 
-    .form-control:disabled {
-      background-color: #f8f9fa;
-      color: #7f8c8d;
-    }
+    .input-wrapper.disabled { background: #F8FAFC; border-radius: 10px; }
+    .input-wrapper.disabled input { background: transparent; border: none; color: #64748B; }
 
-    .btn-primary {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+    .help-text { font-size: 0.8rem; color: #94A3B8; margin-top: 4px; display: block; }
 
-    .btn-primary:hover {
-      background-color: #2980b9;
-    }
-
-    .btn-primary:disabled {
-      background-color: #bdc3c7;
-      cursor: not-allowed;
-    }
-
-    .status-message {
-      margin-top: 15px;
+    .badge-display {
+      display: inline-block;
+      padding: 8px 12px;
+      background: #F0FDF4;
+      color: #166534;
+      border-radius: 6px;
+      font-size: 0.85rem;
       font-weight: 500;
+      margin-top: 4px;
     }
 
-    .success { color: #27ae60; }
-    .error { color: #e74c3c; }
-
-    .error { color: #e74c3c; }
-
-    .action-links {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .action-link {
+    .status-banner {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      padding: 15px;
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #2c3e50;
-      transition: all 0.2s;
-      border: 1px solid transparent;
+      gap: 10px;
+      font-weight: 500;
+      font-size: 0.95rem;
     }
+    .status-banner.success { background: #F0FDF4; color: #166534; }
+    .status-banner.error { background: #FEF2F2; color: #991B1B; }
 
-    .action-link:hover {
-      background-color: white;
-      border-color: #3498db;
-      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
-      transform: translateX(5px);
-    }
-
-    .action-link i:first-child {
-      font-size: 1.5rem;
-      color: #3498db;
-      margin-right: 15px;
-      width: 30px;
-      text-align: center;
-    }
-
-    .action-text {
-      flex: 1;
-    }
-
-    .action-text h3 {
-      font-size: 1rem;
-      margin: 0;
-      font-weight: 600;
-      border: none;
-      padding: 0;
-    }
-
-    .action-text span {
-      font-size: 0.85rem;
-      color: #7f8c8d;
-    }
-
-    .arrow {
-      color: #bdc3c7;
-      font-size: 0.9rem;
+    @media (max-width: 600px) {
+      .form-row { flex-direction: column; gap: 0; }
     }
   `]
 })
@@ -258,6 +415,9 @@ export class DashboardComponent implements OnInit {
   loading = false;
   message = '';
   error = false;
+  isMemberOnly = false;
+  isStaff = false; // New property for staff check
+  userProfile$: Observable<UserProfile | null> | undefined; // Observable for template
 
   constructor(
     private auth: AuthService,
@@ -271,6 +431,13 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userProfile$ = this.auth.currentUserProfile$;
+
+    this.auth.currentUserRole$.subscribe(role => {
+      this.isMemberOnly = role === 'member';
+      this.isStaff = ['admin', 'pastor', 'media'].includes(role || '');
+    });
+
     this.auth.currentUserProfile$.subscribe(profile => {
       if (profile) {
         this.currentUserEmail = profile.email;

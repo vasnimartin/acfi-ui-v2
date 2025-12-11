@@ -27,7 +27,6 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
       const user = authService.currentUserValue;
 
       if (!user) {
-        // Not logged in -> Redirect
         return router.createUrlTree(['/']); 
       }
 
@@ -39,7 +38,6 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
       }
 
       // Logged in but no permission
-      // alert('You do not have permission to access.'); 
       return router.createUrlTree(['/']);
     })
   );

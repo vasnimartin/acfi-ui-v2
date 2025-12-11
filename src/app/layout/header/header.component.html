@@ -114,7 +114,7 @@
                             <li><a routerLink="/dashboard" (click)="closeMenu()">My Dashboard</a></li>
                             <li
                                 *ngIf="!isLoading && currentUserRole && ['admin', 'pastor', 'media'].includes(currentUserRole)">
-                                <a routerLink="/admin" (click)="closeMenu()">Admin</a>
+                                <a routerLink="/admin" (click)="closeMenu()">{{ getRoleLabel() }}</a>
                             </li>
                             <li><a (click)="logout(); closeMenu()" style="cursor: pointer;">Logout</a></li>
                         </ul>

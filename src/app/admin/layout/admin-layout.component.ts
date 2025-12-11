@@ -25,7 +25,7 @@ import { AdminTopbarComponent } from './topbar/admin-topbar.component';
     }
 
     .admin-content {
-      margin-left: 260px; /* Match sidebar width */
+      margin-left: 280px; /* Match sidebar width */
       padding-top: 64px; /* Match topbar height */
       padding: 96px 32px 32px 32px; /* Top padding = 64px + 32px spacing */
       min-height: 100vh;

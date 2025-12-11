@@ -30,16 +30,11 @@ export class AuthService {
     private router: Router
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
-    // Hack to bypass NavigatorLock issues in some browser environments
-    // The lock option expects a function matching LockFunc signature
-    const dummyLock = async (_name: string, _acquireTimeout: number, fn: () => Promise<any>) => fn();
-
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true,
-        lock: dummyLock
+        detectSessionInUrl: true
       }
     });
 
@@ -106,7 +101,7 @@ export class AuthService {
   private async loadUserProfile(userId: string) {
     const data = await this.supabase
       .from('profiles')
-      .select('*') // Select all to get profile fields
+      .select('id, email, full_name, role, phone, address') // Explicit selection
       .eq('id', userId)
       .single();
 
@@ -114,22 +109,27 @@ export class AuthService {
       // If error is PGRST116 (JSON object returned 0 results) or 406, it means row is missing.
       // We should try to create it here as a failsafe.
       if (data.error.code === 'PGRST116' || data.error.code === '406' || data.error.message.includes('0 rows')) {
-         console.warn('Profile missing, attempting auto-creation...');
+         console.warn('[AuthService] Profile missing, attempting auto-creation...');
          await this.createProfile(userId);
          return;
       }
       
-      console.error('Error loading user profile:', data.error);
+      console.error('[AuthService] Error fetching profile:', data.error);
       this._currentUserRole.next('member'); // Fallback to member
       this._currentUserProfile.next(null);
       this._authLoading.next(false); // Done loading (with error)
     } else {
       const profileData = data.data;
-      // Handle potential case sensitivity or mapping
+      
+      // STRICT: Use 'role' column. Fallback to 'member' if null/undefined.
+      // Force lowercase to ensure case-insensitive comparison downstream.
+      const rawRole = profileData.role || 'member';
+      const normalizedRole = rawRole.toLowerCase();
+
       const userProfile: UserProfile = {
         id: profileData.id,
         email: this._currentUser.value?.email || profileData.email || '',
-        role: (profileData.Role || profileData.role || 'member').toLowerCase(),
+        role: normalizedRole,
         full_name: profileData.full_name,
         phone: profileData.phone,
         address: profileData.address
@@ -152,7 +152,7 @@ export class AuthService {
       id: userId,
       email: user.email,
       full_name: user.user_metadata?.['full_name'] || user.email?.split('@')[0] || 'Member',
-      Role: 'member', // Default role
+      role: 'member', // Default role (standardized lowercase)
       updated_at: new Date()
     };
 
