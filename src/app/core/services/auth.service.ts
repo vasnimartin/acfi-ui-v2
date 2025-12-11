@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { SupabaseClient, User, Session } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SupabaseService } from './supabase.service';
+import { ToastService } from './toast.service';
 
 export interface UserProfile {
   id: string;
@@ -28,7 +29,8 @@ export class AuthService {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private toastService: ToastService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.supabase = this.supabaseService.client; // Singleton instance
@@ -143,14 +145,23 @@ export class AuthService {
       updated_at: new Date()
     };
 
-    const { error } = await this.supabase.from('profiles').insert(newProfile);
+    // Use upsert to handle race conditions where the trigger might have already created it
+    const { error } = await this.supabase.from('profiles').upsert(newProfile);
 
     if (error) {
-      console.error('Failed to auto-create profile:', error);
+      console.error('Failed to auto-create (upsert) profile:', error);
+      // If error is 409 (Conflict), we can safely ignore it and reload, as it means it exists.
+      if (error.code === '23505' || error.message.includes('duplicate key')) {
+         console.warn('Profile existed (race condition), reloading...');
+         this.loadUserProfile(userId);
+         return;
+      }
+
+      this.toastService.error('Failed to create user profile. Please contact support.');
       this._currentUserRole.next('member'); // Temporary fallback
       this._authLoading.next(false);
     } else {
-      console.log('Profile auto-created successfully. Reloading...');
+      console.log('Profile auto-created/updated successfully. Reloading...');
       this.loadUserProfile(userId);
     }
   }
