@@ -15,7 +15,7 @@ This contains the version 2 user interface for the ACFI Church website, built wi
 
 ## Development
 
-To start a local development server, run:
+To start a local development server, run: npm install or npm install --force
 
 ```bash
 ng serve
