@@ -18,6 +18,7 @@ export const routes: Routes = [
   {
     path: 'ministries',
     children: [
+      { path: '', loadComponent: () => import('./ministries/ministries.component').then(m => m.MinistriesComponent) },
       { path: 'children', loadComponent: () => import('./ministries/children/children.component').then(m => m.ChildrenComponent) },
       { path: 'music-worship', loadComponent: () => import('./ministries/music-worship/music-worship.component').then(m => m.MusicWorshipComponent) },
       { path: 'outreach', loadComponent: () => import('./ministries/outreach/outreach.component').then(m => m.OutreachComponent) },

@@ -1,12 +1,37 @@
 /* ========================================
-   CHRISTMAS SECTION - Austin Stone Compact Style
+   SEASONAL SECTION - Dynamic Themes
    ======================================== */
-.christmas-section {
+.seasonal-section {
     padding: 120px 0;
     background-color: #ffffff;
+
+    /* Theme Variables */
+    &.christmas {
+        --seasonal-bg: #7a8b6f;
+        --seasonal-bg-light: #9aab8e;
+        --seasonal-accent: #d4af37;
+        --seasonal-accent-dark: #b4941f;
+        --seasonal-text: #faf8f3;
+    }
+
+    &.easter {
+        --seasonal-bg: #6366f1; /* Royal Purple/Indigo */
+        --seasonal-bg-light: #818cf8;
+        --seasonal-accent: #fcd34d; /* Bright Gold */
+        --seasonal-accent-dark: #fbbf24;
+        --seasonal-text: #ffffff;
+    }
+
+    &.general {
+        --seasonal-bg: #1f2937;
+        --seasonal-bg-light: #374151;
+        --seasonal-accent: #10b981;
+        --seasonal-accent-dark: #059669;
+        --seasonal-text: #ffffff;
+    }
 }
 
-.christmas-grid {
+.seasonal-grid {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
     gap: 100px;
@@ -16,9 +41,9 @@
 }
 
 /* Left: Decorative Card */
-.christmas-card {
-    background: #7a8b6f;
-    background: linear-gradient(135deg, #7a8b6f 0%, #9aab8e 50%, #7a8b6f 100%);
+.seasonal-card {
+    background: var(--seasonal-bg);
+    background: linear-gradient(135deg, var(--seasonal-bg) 0%, var(--seasonal-bg-light) 50%, var(--seasonal-bg) 100%);
     padding: 100px 60px;
     border-radius: 12px;
     position: relative;
@@ -38,12 +63,12 @@
     border-radius: 4px;
 }
 
-.christmas-title {
+.seasonal-title {
     font-family: 'Georgia', var(--font-heading), serif;
     font-size: clamp(4rem, 7vw, 6rem);
     font-weight: 400;
     font-style: italic;
-    color: #faf8f3;
+    color: var(--seasonal-text);
     margin-bottom: 16px;
     letter-spacing: 4px;
     line-height: 1;
@@ -52,11 +77,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.christmas-subtitle {
+.seasonal-subtitle {
     font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 600;
-    color: #faf8f3;
+    color: var(--seasonal-text);
     letter-spacing: 4px;
     text-transform: uppercase;
     opacity: 0.95;
@@ -69,23 +94,23 @@
     bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #e0b955 0%, #d4af37 50%, #c9a332 100%);
+    background: linear-gradient(135deg, var(--seasonal-accent) 0%, var(--seasonal-accent-dark) 50%, var(--seasonal-accent) 100%);
     width: 50px;
     height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-ornament i {
-    color: #7a8b6f;
+    color: var(--seasonal-bg);
     font-size: 1.5rem;
 }
 
 /* Right: Content */
-.christmas-content {
+.seasonal-content {
     padding: 40px 0;
 }
 
@@ -131,6 +156,7 @@
     text-decoration: none;
     transition: all 0.3s ease;
     border: none;
+    cursor: pointer;
 }
 
 .btn-explore:hover {
@@ -180,6 +206,7 @@
     right: 0;
     bottom: 0;
     background: rgba(13, 27, 42, 0.95);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: 10000;
     display: flex;
@@ -198,14 +225,30 @@
     width: 100%;
     max-width: 700px;
     max-height: 90vh;
-    background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
     border-radius: 24px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     animation: slideUp 0.4s ease;
     box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+
+    &.christmas {
+        background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        --modal-accent: #d4af37;
+    }
+
+    &.easter {
+        background: linear-gradient(180deg, #4f46e5 0%, #312e81 100%);
+        border: 1px solid rgba(252, 211, 77, 0.3);
+        --modal-accent: #fcd34d;
+    }
+
+    &.general {
+        background: linear-gradient(180deg, #111827 0%, #000000 100%);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        --modal-accent: #10b981;
+    }
 }
 
 @keyframes slideUp {
@@ -228,7 +271,7 @@
 }
 
 .header-decoration .star {
-    color: var(--accent-gold);
+    color: var(--modal-accent);
     font-size: 1rem;
     opacity: 0.6;
 }
@@ -245,7 +288,7 @@
 }
 
 .modal-title i {
-    color: var(--accent-gold);
+    color: var(--modal-accent);
 }
 
 .modal-subtitle {
@@ -309,13 +352,13 @@
 .event-date-badge {
     min-width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--accent-gold) 0%, #c9a227 100%);
+    background: linear-gradient(135deg, var(--modal-accent) 0%, rgba(255, 255, 255, 0.1) 100%);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #0d1b2a;
+    color: #fff;
 }
 
 .date-day {
@@ -351,11 +394,11 @@
 }
 
 .event-time i {
-    color: var(--accent-gold);
+    color: var(--modal-accent);
 }
 
 .event-arrow {
-    color: var(--accent-gold);
+    color: var(--modal-accent);
     opacity: 0;
     transition: all 0.3s ease;
 }
@@ -414,8 +457,8 @@
     align-items: center;
     gap: 10px;
     padding: 10px 18px;
-    background: rgba(212, 175, 55, 0.9);
-    color: #0d1b2a;
+    background: var(--modal-accent);
+    color: #000;
     font-weight: 600;
     font-size: 0.9rem;
     border-radius: 50px;
@@ -436,7 +479,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: var(--accent-gold);
+    color: var(--modal-accent);
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -458,13 +501,13 @@
     flex-wrap: wrap;
 }
 
-.btn-primary-christmas {
+.btn-primary-seasonal {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     padding: 14px 28px;
-    background: linear-gradient(135deg, var(--accent-gold) 0%, #c9a227 100%);
-    color: #0d1b2a;
+    background: var(--modal-accent);
+    color: #000;
     font-weight: 700;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -475,12 +518,12 @@
     transition: all 0.3s ease;
 }
 
-.btn-primary-christmas:hover {
+.btn-primary-seasonal:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.btn-secondary-christmas {
+.btn-secondary-seasonal {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -497,7 +540,7 @@
     transition: all 0.3s ease;
 }
 
-.btn-secondary-christmas:hover {
+.btn-secondary-seasonal:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: #fff;
 }
@@ -514,7 +557,7 @@
     justify-content: center;
     gap: 15px;
     margin-bottom: 12px;
-    color: var(--accent-gold);
+    color: var(--modal-accent);
     font-size: 0.8rem;
     opacity: 0.5;
 }
@@ -569,5 +612,194 @@
     .btn-secondary-christmas {
         width: 100%;
         justify-content: center;
+    }
+}
+/* ========================================
+   CMS / ADMIN STYLES (MODAL)
+   ======================================== */
+.admin-modal-actions {
+    margin-top: 10px;
+}
+
+.btn-cms-action {
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    &.add {
+        background: var(--modal-accent);
+        color: #000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+            transform: scale(1.05);
+            background: #fff;
+        }
+    }
+}
+
+.event-admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 10px;
+
+    button {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.9rem;
+    }
+
+    .btn-row-edit {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        &:hover {
+            background: var(--modal-accent);
+            color: #000;
+            border-color: var(--modal-accent);
+        }
+    }
+
+    .btn-row-delete {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+
+        &:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+    }
+}
+
+.cms-form {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px dashed var(--modal-accent);
+
+    .form-section-title {
+        color: var(--modal-accent);
+        margin-bottom: 25px;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .form-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, textarea {
+            background: #0d1b2a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+
+            &:focus {
+                outline: none;
+                border-color: var(--modal-accent);
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 30px;
+
+        button {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save-announcement {
+            background: var(--modal-accent);
+            color: #000;
+            border: none;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        .btn-cancel-announcement {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}
+
+.empty-announcements {
+    padding: 40px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.event-subtitle-text {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .cms-form .form-row {
+        grid-template-columns: 1fr;
     }
 }
