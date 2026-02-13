@@ -1,7 +1,7 @@
-<div class="home-page-wrapper">
-  <div class="snow-overlay"></div>
+<div class="home-page-wrapper" *ngIf="theme$ | async as theme">
+  <div class="snow-overlay" *ngIf="theme === 'christmas'"></div>
   <app-hero></app-hero>
-  <app-christmas-welcome></app-christmas-welcome>
+  <app-seasonal-welcome></app-seasonal-welcome>
   <app-service-schedule></app-service-schedule>
   <app-events></app-events>
   <app-tenets></app-tenets>

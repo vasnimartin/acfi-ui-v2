@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MinistryService, Ministry } from '../../../core/services/ministry.service';
-import { MinistryFormComponent } from '../ministry-form/ministry-form.component';
+import { MinistryService, Ministry } from '../../core/services/ministry.service';
+import { MinistryFormComponent } from './ministry-form/ministry-form.component';
 
 @Component({
   selector: 'app-ministries-admin',
@@ -174,11 +174,11 @@ export class MinistriesAdminComponent implements OnInit {
 
   loadMinistries() {
     this.ministryService.getMinistries().subscribe({
-      next: (data) => {
+      next: (data: Ministry[]) => {
         this.ministries = data;
         this.filterMinistries();
       },
-      error: (err) => console.error('Error loading ministries', err)
+      error: (err: any) => console.error('Error loading ministries', err)
     });
   }
 
@@ -217,7 +217,7 @@ export class MinistriesAdminComponent implements OnInit {
           this.showModal = false;
           this.loadMinistries();
         },
-        error: (err) => console.error('Error updating ministry', err)
+        error: (err: any) => console.error('Error updating ministry', err)
       });
     } else {
       this.ministryService.createMinistry(ministryData).subscribe({
@@ -225,7 +225,7 @@ export class MinistriesAdminComponent implements OnInit {
           this.showModal = false;
           this.loadMinistries();
         },
-        error: (err) => console.error('Error creating ministry', err)
+        error: (err: any) => console.error('Error creating ministry', err)
       });
     }
   }
@@ -235,7 +235,7 @@ export class MinistriesAdminComponent implements OnInit {
       if (ministry.id) {
         this.ministryService.deleteMinistry(ministry.id).subscribe({
           next: () => this.loadMinistries(),
-          error: (err) => console.error('Error deleting ministry', err)
+          error: (err: any) => console.error('Error deleting ministry', err)
         });
       }
     }

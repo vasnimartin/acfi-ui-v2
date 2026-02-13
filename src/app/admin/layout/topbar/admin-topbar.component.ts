@@ -43,6 +43,7 @@ import { Observable } from 'rxjs';
       width: calc(100% - 260px); /* Sidebar width */
       height: 64px;
       background: rgba(255, 255, 255, 0.9);
+      -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(0,0,0,0.06);
       position: fixed;

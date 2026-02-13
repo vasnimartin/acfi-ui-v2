@@ -38,7 +38,7 @@
         Christmas Events 2024
       </h2>
       <p class="modal-subtitle">Carol Rounds & Celebrations</p>
-      <button class="close-btn" (click)="closeModal()">
+      <button class="close-btn" (click)="closeModal()" title="Close Modal" aria-label="Close Modal">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -71,7 +71,7 @@
       </button>
 
       <div class="detail-image">
-        <img [src]="selectedEvent.image" [alt]="selectedEvent.title">
+        <img [src]="selectedEvent.image" alt="{{selectedEvent.title}}" title="{{selectedEvent.title}}">
         <div class="image-overlay">
           <div class="date-ribbon">
             <i class="fa-regular fa-calendar"></i>

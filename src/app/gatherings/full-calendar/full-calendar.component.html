@@ -13,7 +13,7 @@
   <div class="filter-bar">
     <div class="filter-group">
       <label>Category:</label>
-      <select class="filter-select">
+      <select class="filter-select" title="Filter by Category" aria-label="Filter events by category">
         <option>All Events</option>
         <option>Sunday Services</option>
         <option>Bible Studies</option>
@@ -27,7 +27,7 @@
     </div>
     <div class="filter-group">
       <label>Location:</label>
-      <select class="filter-select">
+      <select class="filter-select" title="Filter by Location" aria-label="Filter events by location">
         <option>All</option>
         <option>In-Person</option>
         <option>Online</option>
@@ -48,9 +48,11 @@
     <!-- Calendar Placeholder -->
     <div class="calendar-view">
       <div class="calendar-header">
-        <button class="nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <button type="button" class="nav-btn" title="Previous Month" aria-label="Go to previous month"><i
+            class="fa-solid fa-chevron-left"></i></button>
         <h3>December 2025</h3>
-        <button class="nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        <button type="button" class="nav-btn" title="Next Month" aria-label="Go to next month"><i
+            class="fa-solid fa-chevron-right"></i></button>
       </div>
       <div class="calendar-body">
         <div class="calendar-placeholder">

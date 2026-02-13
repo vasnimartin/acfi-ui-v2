@@ -10,9 +10,26 @@
     --font-heading: 'Cinzel', serif;
     --font-body: 'Lato', sans-serif;
     --header-height: 80px;
+    --admin-bar-offset: 0px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother definition */
-    
-    /* Branding Gradients */
+}
+
+.admin-bar-visible {
+    --admin-bar-offset: 44px;
+}
+
+.app-layout-wrapper {
+    padding-top: calc(var(--header-height) + var(--admin-bar-offset));
+    transition: padding-top 0.3s ease;
+}
+
+.site-header {
+    top: var(--admin-bar-offset) !important;
+    transition: top 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Branding Gradients */
+:root {
     --gradient-primary: linear-gradient(135deg, #0B1120 0%, #1e3a8a 100%);
     --gradient-gold: linear-gradient(135deg, #DAA520 0%, #F4C430 100%);
     
